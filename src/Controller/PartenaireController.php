@@ -8,11 +8,13 @@ use Symfony\Component\HttpFoundation\Request;
 use App\Entity\Partenaire;
 use App\Entity\Compte;
 use App\Entity\UserPartenaire;
+use App\Entity\User;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
  /**
      * @Route("/api") 
@@ -34,11 +36,49 @@ class PartenaireController extends AbstractController
      * @Route("/api/partenaires", name="ajouPartenaire",methods={"POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function ajoutPartenaire(Partenaire $partenaire,Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager)
+    public function ajoutPartenaire(Partenaire $partenaire,Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
     {
-        $partenaire=$serializer->deserialize($request->getContent(),Partenaire::class,'json');
+        $partenaire= new Partenaire();
+        $email=getEmail();
+        $password=getPassword();
         $entityManager->persist($partenaire);
         $entityManager->flush();
+
+        $user= new User();
+        $form=$this->createForm(UserType::class, $user);
+        $form->handleRequest($request);
+        $values=$request->request->all();
+        $form->submit($values);
+        $files=$request->files->all()['imageName'];
+
+            $user->setEmail($email);
+            $user->setPassword($passwordEncoder->encodePassword($user, $password));
+            $user->setImageFile($files);
+            $user->setProfile("admin");
+            $user->setStatut("BLOQUER");
+            $user->setRoles(["ROLE_ADMIN"]);
+            $errors = $validator->validate($user);
+            if(count($errors)) {
+                return new Response($errors, 500, [
+                    'Content-Type' => 'application/json'
+                ]);
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+        $compte= new Compte();
+        $values =$request->getContent();
+        $compte->setNumeroCompte($values->NumeroCompte);
+        $compte->setDateCreation($values->DateCreation);
+        $compte->setMontantInitial(0);
+        $compte->setMontantDeposer($values->MontantDeposer);
+        $solde=getMontantInitial()+getMontantDeposer();
+        $compte->setSolde($solde);
+        $entityManager->persist($user);
+        $entityManager->flush();
+        
+        
         $data=[
             'status'=>201,
             'message'=>' Le partenaire est ajouté'

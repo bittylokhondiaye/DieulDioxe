@@ -51,7 +51,7 @@ class User implements UserInterface
     /**
      * NOTE: This is not a mapped field of entity metadata, just a simple property.
      * 
-     * @Vich\UploadableField(mapping="products", fileNameProperty="imageName", size="imageSize")
+     * @Vich\UploadableField(mapping="products", fileNameProperty="imageName")
      * 
      * @var File
      */

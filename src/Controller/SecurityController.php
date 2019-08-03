@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Form\UserType;
 
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Routing\Annotation\Route;
@@ -15,6 +16,7 @@ use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Security\Core\User\UserInterface;
+ 
 
 
 /**
@@ -29,16 +31,22 @@ class SecurityController extends AbstractController
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
     {
-        $values = $request->getContent();
-        if(isset($values->email,$values->password)) {
+       
             $user = new User();
-            $user->setEmail($values->email);
-            $user->setPassword($passwordEncoder->encodePassword($user, $values->password));
-            $user->setProfile($values->Profile);
-            $user->setImageFile($values->Image);
-            $user->setImageName($values->ImageName);
+            $form=$this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            $values=$request->request->all();
+            $form->submit($values);
+            $files=$request->files->all()['imageName'];
+
+            //if($form->isSubmitted() && $form->isValid()) {
+                //var_dump("okok"); die();
+            $user->setEmail($values["email"]);
+            $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
+            $user->setImageFile($files);
+            $user->setProfile($values["Profile"]);
             $user->setStatut("BLOQUER");
-            $Profile=$values->Profile;
+            $Profile=$values["Profile"];
             $roles=[];
             if($Profile=="user" ){
                 $roles=["ROLE_USER"];
@@ -51,7 +59,7 @@ class SecurityController extends AbstractController
             }
         
             $user->setRoles($roles);
-            $user->setStatut($values->Statut);
+            /* $user->setStatut($values["Statut"]); */
             $errors = $validator->validate($user);
             if(count($errors)) {
                 /* $errors = $serializer->serialize($errors, 'json'); */
@@ -68,7 +76,7 @@ class SecurityController extends AbstractController
             ];
 
             return new JsonResponse($data, 201);
-        }
+        //}
         $data = [
             'status' => 500,
             'message' => 'Vous devez renseigner les clés email et password'

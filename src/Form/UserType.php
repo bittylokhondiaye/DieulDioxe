@@ -5,21 +5,23 @@ namespace App\Form;
 use App\Entity\User;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
-use Symfony\Component\OptionsResolver\OptionsResolver;
 use Vich\UploaderBundle\Form\Type\VichImageType;
+use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+
 
 class UserType extends AbstractType
 {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
-            ->add('email')
-            ->add('password')
-            ->add('Profile')
-            ->add('Statut')
+            ->add('email', TextType::class)
+            ->add('password', TextType::class)
+            ->add('Profile', TextType::class)
+            ->add('Statut', TextType::class)
             ->add('imageFile', VichImageType::class)
-            ->add('updatedAt')
-            ->add('roles')
+            ->add('updatedAt' )
+
         ;
     }
 
