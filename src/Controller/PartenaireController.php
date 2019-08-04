@@ -2,19 +2,25 @@
 
 namespace App\Controller;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
-use Symfony\Component\Routing\Annotation\Route;
-use Symfony\Component\HttpFoundation\Request;
-use App\Entity\Partenaire;
-use App\Entity\Compte;
-use App\Entity\UserPartenaire;
 use App\Entity\User;
+use App\Entity\Compte;
+use App\Form\UserType;
+use App\Form\CompteType;
+use App\Entity\Partenaire;
+use App\Form\PartenaireType;
+use App\Entity\UserPartenaire;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
+
 
  /**
      * @Route("/api") 
@@ -36,52 +42,66 @@ class PartenaireController extends AbstractController
      * @Route("/api/partenaires", name="ajouPartenaire",methods={"POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function ajoutPartenaire(Partenaire $partenaire,Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator)
+    public function ajoutPartenaire(Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator):Response
     {
         $partenaire= new Partenaire();
-        $email=getEmail();
-        $password=getPassword();
+        $form=$this->createForm(PartenaireType::class, $partenaire);
+        $values=$request->request->all();
+       
+        $form->submit($values);
+        $entityManager= $this->getDoctrine()->getManager();
         $entityManager->persist($partenaire);
         $entityManager->flush();
+        
+        $id=$partenaire->getId();
+        $email=$partenaire->getEmail();
+        $password=$partenaire->getPassword();
 
-        $user= new User();
-        $form=$this->createForm(UserType::class, $user);
-        $form->handleRequest($request);
-        $values=$request->request->all();
-        $form->submit($values);
-        $files=$request->files->all()['imageName'];
 
+            $user = new User();
+            $form=$this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            $values=$request->request->all();
+            $form->submit($values);
+            $files=$request->files->all()['imageName'];
+
+            
             $user->setEmail($email);
-            $user->setPassword($passwordEncoder->encodePassword($user, $password));
+            $encode=$passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($encode);
             $user->setImageFile($files);
             $user->setProfile("admin");
             $user->setStatut("BLOQUER");
-            $user->setRoles(["ROLE_ADMIN"]);
+            $roles=["ROLE_ADMIN"];
+        
+            $user->setRoles($roles);
+            
             $errors = $validator->validate($user);
             if(count($errors)) {
-                return new Response($errors, 500, [
-                    'Content-Type' => 'application/json'
-                ]);
+                
+                return new Response($errors, 500 );
             }
             $entityManager->persist($user);
             $entityManager->flush();
 
 
         $compte= new Compte();
-        $values =$request->getContent();
-        $compte->setNumeroCompte($values->NumeroCompte);
-        $compte->setDateCreation($values->DateCreation);
+        $form=$this->createForm(CompteType::class, $compte);
+        $form->handleRequest($request); 
+        $values=$request->request->all();
+        $form->submit($values);
         $compte->setMontantInitial(0);
-        $compte->setMontantDeposer($values->MontantDeposer);
-        $solde=getMontantInitial()+getMontantDeposer();
-        $compte->setSolde($solde);
-        $entityManager->persist($user);
+        $compte->setMontantDeposer(0);
+        $compte->setSolde(0);
+        $compte->setPartenaire($id);
+        $entityManager= $this->getDoctrine()->getManager();
+        $entityManager->persist($compte);
         $entityManager->flush();
         
         
         $data=[
-            'status'=>201,
-            'message'=>' Le partenaire est ajouté'
+            'status1'=>201,
+            'message1'=>' Le partenaire est ajouté'
         ];
 
         return new JsonResponse($data,201);

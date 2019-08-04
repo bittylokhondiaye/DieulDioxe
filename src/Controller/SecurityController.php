@@ -39,8 +39,7 @@ class SecurityController extends AbstractController
             $form->submit($values);
             $files=$request->files->all()['imageName'];
 
-            //if($form->isSubmitted() && $form->isValid()) {
-                //var_dump("okok"); die();
+           
             $user->setEmail($values["email"]);
             $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
             $user->setImageFile($files);
@@ -59,13 +58,13 @@ class SecurityController extends AbstractController
             }
         
             $user->setRoles($roles);
-            /* $user->setStatut($values["Statut"]); */
+            
             $errors = $validator->validate($user);
             if(count($errors)) {
-                /* $errors = $serializer->serialize($errors, 'json'); */
-                return new Response($errors, 500, [
+                
+                return new Response($errors, 500  /* [
                     'Content-Type' => 'application/json'
-                ]);
+                ] */ );
             }
             $entityManager->persist($user);
             $entityManager->flush();
@@ -76,12 +75,7 @@ class SecurityController extends AbstractController
             ];
 
             return new JsonResponse($data, 201);
-        //}
-        $data = [
-            'status' => 500,
-            'message' => 'Vous devez renseigner les clés email et password'
-        ];
-        return new JsonResponse($data, 500);
+      
     }
 
 

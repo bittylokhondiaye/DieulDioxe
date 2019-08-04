@@ -3,10 +3,10 @@
 namespace App\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\HttpFoundation\File\File;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -67,7 +67,7 @@ class User implements UserInterface
     
 
     /**
-     * @ORM\Column(type="datetime")
+     * @ORM\Column(type="datetime",nullable=true)
      *
      * @var \DateTime
      */
@@ -138,7 +138,7 @@ class User implements UserInterface
     }
 
     /**
-     * @param File $imageFile
+     * @param | File $imageFile
      */
     public function setImageFile(?File $imageFile = null): void
     {
@@ -182,8 +182,7 @@ class User implements UserInterface
      */
     public function eraseCredentials()
     {
-        // If you store any temporary, sensitive data on the user, clear it here
-        // $this->plainPassword = null;
+        
     }
 
     public function getProfile(): ?string
@@ -215,7 +214,7 @@ class User implements UserInterface
      *
      * @return  \DateTime
      */ 
-    public function getUpdatedAt()
+    public function getUpdatedAt(): ? \DateTimeInterface
     {
         return $this->updatedAt;
     }
@@ -227,7 +226,7 @@ class User implements UserInterface
      *
      * @return  self
      */ 
-    public function setUpdatedAt(\DateTime $updatedAt)
+    public function setUpdatedAt(\DateTimeInterface $updatedAt)
     {
         $this->updatedAt = $updatedAt;
 
