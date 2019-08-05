@@ -162,7 +162,6 @@ class PartenaireController extends AbstractController
     public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager)
     {
         $userPartenaire = $serialize->deserialize($request->getContent(), Caissier::class, 'json');
-        if(scompte-getMon)
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
