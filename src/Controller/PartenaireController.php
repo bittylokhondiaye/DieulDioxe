@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\User;
 use App\Entity\Compte;
 use App\Form\UserType;
+use App\Entity\Caissier;
 use App\Form\CompteType;
 use App\Entity\Partenaire;
 use App\Form\PartenaireType;
@@ -12,14 +13,16 @@ use App\Entity\UserPartenaire;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Symfony\Component\Security\Core\User\UserInterface;
 
 
  /**
@@ -90,10 +93,11 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
+        $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
         $compte->setMontantDeposer(0);
         $compte->setSolde(0);
-        $compte->setPartenaire($id);
+        $compte->setPartenaire($partenaire);
         $entityManager= $this->getDoctrine()->getManager();
         $entityManager->persist($compte);
         $entityManager->flush();
@@ -117,8 +121,8 @@ class PartenaireController extends AbstractController
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
-            'status' => 201,
-            'message' => 'Le UserPartenaire a bien été ajouté'
+            'status2' => 201,
+            'message2' => 'Le UserPartenaire a bien été ajouté'
         ];
         return new JsonResponse($data, 201);
     }
@@ -129,12 +133,40 @@ class PartenaireController extends AbstractController
      */
     public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager)
     {
-        $Compte = $serializer->deserialize($request->getContent(), Compte::class, 'json');
-        $entityManager->persist($Compte);
+        $compte= new Compte();
+        $form=$this->createForm(CompteType::class, $compte);
+        $form->handleRequest($request); 
+        $values=$request->request->all();
+        $form->submit($values);
+        $compte->setDateCreation(new \DateTime());
+        $compte->setMontantInitial(0);
+        $compte->setMontantDeposer(0);
+        $compte->setSolde(0);
+        
+        
+        $entityManager= $this->getDoctrine()->getManager();
+        $entityManager->persist($compte);
         $entityManager->flush();
         $data = [
             'status' => 201,
             'message' => 'Le compte a bien été ajouté'
+        ];
+        return new JsonResponse($data, 201);
+    }
+
+
+    /**
+     * @Route("/api/caissier" , name="addCaissier", methods={"POST"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     */
+    public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager)
+    {
+        $userPartenaire = $serialize->deserialize($request->getContent(), Caissier::class, 'json');
+        $entityManager->persist($userPartenaire);
+        $entityManager->flush();
+        $data = [
+            'status' => 201,
+            'message' => 'Le Caissier a bien été ajouté'
         ];
         return new JsonResponse($data, 201);
     }

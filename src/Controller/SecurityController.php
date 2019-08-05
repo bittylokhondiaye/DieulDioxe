@@ -56,6 +56,9 @@ class SecurityController extends AbstractController
             else if($Profile=="superAdmin"){
                 $roles=["ROLE_SUPER_ADMIN"];
             }
+            else if($Profile=="caissier"){
+                $roles=["ROLE_CAISSIER"];
+            }
         
             $user->setRoles($roles);
             

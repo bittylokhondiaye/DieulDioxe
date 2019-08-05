@@ -20,7 +20,7 @@ class UserType extends AbstractType
             ->add('Profile', TextType::class)
             ->add('Statut', TextType::class)
             ->add('imageFile', VichImageType::class)
-            ->add('updatedAt' )
+            ->add('updatedAt',TextType::class )
 
         ;
     }

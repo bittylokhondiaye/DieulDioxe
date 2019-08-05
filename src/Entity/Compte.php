@@ -2,10 +2,13 @@
 
 namespace App\Entity;
 
+
+use DateTimeInterface;
+use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\Common\Collections\Collection;
-use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 /**
  * @ApiResource()
@@ -26,7 +29,9 @@ class Compte
     private $NumeroCompte;
 
     /**
-     * @ORM\Column(type="\datetime")
+     * @ORM\Column(type="datetime", nullable=true)
+     * 
+     * @var \DateTime
      * 
      */
     private $DateCreation;
@@ -78,12 +83,27 @@ class Compte
         return $this;
     }
 
+
+    /**
+     * Get the value of DateCreation
+     *
+     * @return  \DateTime
+     */
+
     public function getDateCreation(): ?\DateTimeInterface
     {
         return $this->DateCreation;
     }
 
-    public function setDateCreation(\DateTimeInterface $DateCreation): self
+    /**
+     * Set the value of DateCreation
+     *
+     * @param  \DateTime  $DateCreation
+     *
+     * @return  self
+     */
+
+    public function setDateCreation(\DateTimeInterface $DateCreation) 
     {
         $this->DateCreation = $DateCreation;
 
