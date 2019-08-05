@@ -3,6 +3,7 @@
 namespace App\Controller;
 
 use App\Entity\User;
+use App\Entity\Depot;
 use App\Entity\Compte;
 use App\Form\UserType;
 use App\Entity\Caissier;
@@ -21,8 +22,10 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 
  /**
@@ -194,30 +197,37 @@ class PartenaireController extends AbstractController
 
 
     /**
-     * @Route("/depot/{id}" , name="depotCompte", methods={"POST"})
+     * @Route("/depot" , name="depotCompte", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function depotCompte(Request $request,EntityManagerInterface $entityManager)
+    public function depotCompte(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
-        $compte= new Compte();
-        $form=$this->createForm(CompteType::class, $compte);
-        $values=$request->request->all();
-        /* $entityManager=$this->getDoctrine()->getManager()->getRepository(Compte::class)->find($compte->getId()); */
-        $compteUpdate=$entityManager->getRepository(Compte::class)->find($compte->getId());
+        $depot=new Depot();
+        $form=$this->createForm(Depot::class, $depot);
         $form->handleRequest($request); 
-        
+        $values=$request->request->all();
         $form->submit($values);
-        $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
-        $compteUpdate->setDateCreation(new \DateTime());
-        $compte->getMontantInitial();
-        $solde=$values->getSolde()+$values->getMontantDeposer();
-        $compteUpdate->setSolde($solde);
-        $compte->setPartenaire($partenaire);
-        var_dump($compteUpdate);
-        
-        
-        
+        $depot->setDate(new \DateTime());
+        $entityManager->persist($depot);
         $entityManager->flush();
+
+        $montant=$depot->getMontant();
+        $compte=new Compte();
+        $compte->setMontantInitial($compte->getMontantDeposer());
+        $compte->setMontantDeposer($montant);
+        $sole=
+        $entityManager->persist($compte);
+        $entityManager->flush();
+        $errors = $validator->validate($depot);
+        if(count($errors)) {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+
+        
+        
+       
         $data = [
             'status' => 201,
             'message' => 'Le compte a bien été ajouté'
