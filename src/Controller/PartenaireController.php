@@ -98,6 +98,10 @@ class PartenaireController extends AbstractController
         $compte->setSolde(0);
         $compte->setPartenaire($partenaire);
         $entityManager= $this->getDoctrine()->getManager();
+        $errors = $validator->validate($compte);
+        if(count($errors)) {
+            return new Response($errors, 500);
+        }
         $entityManager->persist($compte);
         $entityManager->flush();
         
@@ -114,9 +118,14 @@ class PartenaireController extends AbstractController
      * @Route("/userPartenaires", name="addUserPartenaire", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager)
+    public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $userPartenaire = $serializer->deserialize($request->getContent(), UserPartenaire::class, 'json');
+        $errors = $validator->validate($userUpdate);
+            if(count($errors)) {
+                $errors = $serializer->serialize($errors, 'json');
+                return new Response($errors, 500);
+            }
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
@@ -130,7 +139,7 @@ class PartenaireController extends AbstractController
      * @Route("/api/compte" , name="addCompte", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager)
+    public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $compte= new Compte();
         $form=$this->createForm(CompteType::class, $compte);
@@ -145,6 +154,12 @@ class PartenaireController extends AbstractController
         $compte->setPartenaire($partenaire);
         
         $entityManager= $this->getDoctrine()->getManager();
+        $errors = $validator->validate($compte);
+        if(count($errors)) {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
         $entityManager->persist($compte);
         $entityManager->flush();
         $data = [
@@ -159,9 +174,15 @@ class PartenaireController extends AbstractController
      * @Route("/api/caissier" , name="addCaissier", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager)
+    public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $userPartenaire = $serialize->deserialize($request->getContent(), Caissier::class, 'json');
+        $errors = $validator->validate($userPartenaire);
+        if(count($errors)) {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [

@@ -105,6 +105,7 @@ class SecurityController extends AbstractController
         $user->getEmail($values->email);
         $user->getPassword();
         $user->getProfile();
+        $user->getImageName();
         if($user->getStatut()=="BLOQUER"){
             $userUpdate->setStatut("DEBLOQUER");
         }
@@ -124,6 +125,9 @@ class SecurityController extends AbstractController
             }
             else if($user->getProfile()=="superAdmin"){
                 $roles=["ROLE_SUPER_ADMIN"];
+            }
+            else if($user->getProfile()=="caissier"){
+                $roles=["ROLE_CAISSIER"];
             }
         }
         $user->setRoles($roles);
