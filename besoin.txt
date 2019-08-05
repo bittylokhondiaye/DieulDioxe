@@ -4,4 +4,5 @@ composer require symfony/serializer
 composer require friendsofsymfony/rest-bundle
 composer require symfony/web-server-bundle --dev
 composer require form annotations
-composer require --dev symfony/browser-kit symfony/css-selector
+composer require --dev symfony/browser-kit symfony/css-selector 
+composer require --dev doctrine/doctrine-fixtures-bundle

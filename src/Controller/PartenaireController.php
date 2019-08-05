@@ -137,14 +137,12 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
-        $partenaire=$entityManager->getRepository(Partenaire::class)->find($compte->getId());
+        $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
         $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
         $compte->setSolde($solde);
         $compte->setPartenaire($partenaire);
-        
-        
         
         $entityManager= $this->getDoctrine()->getManager();
         $entityManager->persist($compte);
@@ -164,6 +162,7 @@ class PartenaireController extends AbstractController
     public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager)
     {
         $userPartenaire = $serialize->deserialize($request->getContent(), Caissier::class, 'json');
+        if(scompte-getMon)
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
@@ -178,18 +177,23 @@ class PartenaireController extends AbstractController
      * @Route("/depot/{id}" , name="depotCompte", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public function depotCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager)
+    public function depotCompte(Request $request,EntityManagerInterface $entityManager)
     {
         $compte= new Compte();
         $form=$this->createForm(CompteType::class, $compte);
+        $values=$request->request->all();
+        /* $entityManager=$this->getDoctrine()->getManager()->getRepository(Compte::class)->find($compte->getId()); */
         $compteUpdate=$entityManager->getRepository(Compte::class)->find($compte->getId());
         $form->handleRequest($request); 
-        $values=$request->request->all();
+        
         $form->submit($values);
+        $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
         $compteUpdate->setDateCreation(new \DateTime());
         $compte->getMontantInitial();
-        $solde=$values->getSolde()+$values->MontantDeposer;
+        $solde=$values->getSolde()+$values->getMontantDeposer();
         $compteUpdate->setSolde($solde);
+        $compte->setPartenaire($partenaire);
+        var_dump($compteUpdate);
         
         
         
