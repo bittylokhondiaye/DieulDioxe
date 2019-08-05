@@ -9,6 +9,8 @@ use Doctrine\Common\Collections\Collection;
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\DateTime;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ApiResource()
@@ -25,6 +27,7 @@ class Compte
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $NumeroCompte;
 
@@ -38,16 +41,20 @@ class Compte
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $MontantInitial;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
+     * @Assert\Range(min="75000")
      */
     private $MontantDeposer;
 
     /**
      * @ORM\Column(type="integer")
+     * @Assert\NotBlank()
      */
     private $Solde;
 

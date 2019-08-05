@@ -9,6 +9,8 @@ use Vich\UploaderBundle\Mapping\Annotation as Vich;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * @ORM\Entity(repositoryClass="App\Repository\UserRepository")
@@ -25,6 +27,7 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=180, unique=true)
+     * @Assert\NotBlank()
      */
     private $email;
 
@@ -36,17 +39,20 @@ class User implements UserInterface
     /**
      * @var string The hashed password
      * @ORM\Column(type="string")
+     * @Assert\NotBlank()
      */
     private $password;
 
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $Profile;
 
     /**
      * @ORM\Column(type="string", length=255)
+     * @Assert\NotBlank()
      */
     private $Statut;
 
@@ -56,6 +62,7 @@ class User implements UserInterface
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageName")
      * 
      * @var File
+     * @Assert\NotBlank()
      */
     private $imageFile;
 
@@ -63,6 +70,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      *
      * @var string
+     * @Assert\NotBlank()
      */
     private $imageName;
 
@@ -72,6 +80,7 @@ class User implements UserInterface
      * @ORM\Column(type="datetime",nullable=true)
      *
      * @var \DateTime
+     * @Assert\NotBlank()
      */
     private $updatedAt;
 

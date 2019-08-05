@@ -56,7 +56,6 @@ class PartenaireController extends AbstractController
         $entityManager->persist($partenaire);
         $entityManager->flush();
         
-        $id=$partenaire->getId();
         $email=$partenaire->getEmail();
         $password=$partenaire->getPassword();
 
@@ -138,18 +137,21 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
+        $partenaire=$entityManager->getRepository(Partenaire::class)->find($compte->getId());
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
-        $compte->setMontantDeposer(0);
-        $compte->setSolde(0);
+        $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
+        $compte->setSolde($solde);
+        $compte->setPartenaire($partenaire);
+        
         
         
         $entityManager= $this->getDoctrine()->getManager();
         $entityManager->persist($compte);
         $entityManager->flush();
         $data = [
-            'status' => 201,
-            'message' => 'Le compte a bien été ajouté'
+            'status3' => 201,
+            'message3' => 'Le compte a bien été ajouté'
         ];
         return new JsonResponse($data, 201);
     }
@@ -170,4 +172,33 @@ class PartenaireController extends AbstractController
         ];
         return new JsonResponse($data, 201);
     }
+
+
+    /**
+     * @Route("/depot/{id}" , name="depotCompte", methods={"POST"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     */
+    public function depotCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager)
+    {
+        $compte= new Compte();
+        $form=$this->createForm(CompteType::class, $compte);
+        $compteUpdate=$entityManager->getRepository(Compte::class)->find($compte->getId());
+        $form->handleRequest($request); 
+        $values=$request->request->all();
+        $form->submit($values);
+        $compteUpdate->setDateCreation(new \DateTime());
+        $compte->getMontantInitial();
+        $solde=$values->getSolde()+$values->MontantDeposer;
+        $compteUpdate->setSolde($solde);
+        
+        
+        
+        $entityManager->flush();
+        $data = [
+            'status' => 201,
+            'message' => 'Le compte a bien été ajouté'
+        ];
+        return new JsonResponse($data, 201);
+    }
+
 }
