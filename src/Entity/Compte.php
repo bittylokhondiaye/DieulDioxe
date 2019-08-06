@@ -10,6 +10,7 @@ use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Component\Form\FormTypeInterface;
 
 
 /**

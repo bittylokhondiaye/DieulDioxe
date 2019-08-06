@@ -4,8 +4,10 @@ namespace App\Controller;
 
 use App\Entity\User;
 use App\Entity\Depot;
+use App\Form\DepotType;
 use App\Entity\Compte;
 use App\Form\UserType;
+use App\Form\CaissierType;
 use App\Entity\Caissier;
 use App\Form\CompteType;
 use App\Entity\Partenaire;
@@ -25,6 +27,7 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+
 
 
 
@@ -56,6 +59,11 @@ class PartenaireController extends AbstractController
        
         $form->submit($values);
         $entityManager= $this->getDoctrine()->getManager();
+        $errors = $validator->validate($partenaire);
+            if(count($errors)) {
+                
+                return new Response($errors, 500 );
+            }
         $entityManager->persist($partenaire);
         $entityManager->flush();
         
@@ -124,7 +132,7 @@ class PartenaireController extends AbstractController
     public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $userPartenaire = $serializer->deserialize($request->getContent(), UserPartenaire::class, 'json');
-        $errors = $validator->validate($userUpdate);
+        $errors = $validator->validate($userPartenaire);
             if(count($errors)) {
                 $errors = $serializer->serialize($errors, 'json');
                 return new Response($errors, 500);
@@ -203,19 +211,33 @@ class PartenaireController extends AbstractController
     public function depotCompte(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $depot=new Depot();
-        $form=$this->createForm(Depot::class, $depot);
+        $form=$this->createForm(DepotType::class, $depot);
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
+        $caissier=$entityManager->getRepository(Caissier::class)->find($values["caissier"]);
+        $depot->setCaissier($caissier);
+        $compte=$entityManager->getRepository(Compte::class)->find($depot->getCompte("Compte"));
+        var_dump($compte);die;
+        $depot->setCompte($compte);
         $depot->setDate(new \DateTime());
+        $errors = $validator->validate($depot);
+        if(count($errors)) {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
         $entityManager->persist($depot);
         $entityManager->flush();
 
         $montant=$depot->getMontant();
-        $compte=new Compte();
-        $compte->setMontantInitial($compte->getMontantDeposer());
+        $compte=$depot->getCompte();
+        
+        $compte->getMontantInitial();
+        $compte->setMontantInitial($compte->getSolde());
         $compte->setMontantDeposer($montant);
-        $sole=
+        $solde=$compte->getSolde()+$compte->getMontantDeposer();
+        $compte->setSolde($solde);
         $entityManager->persist($compte);
         $entityManager->flush();
         $errors = $validator->validate($depot);

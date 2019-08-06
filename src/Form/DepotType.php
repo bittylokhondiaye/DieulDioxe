@@ -4,7 +4,9 @@ namespace App\Form;
 
 use App\Entity\Depot;
 use App\Entity\Compte;
+use App\Entity\Caissier;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -17,6 +19,7 @@ class DepotType extends AbstractType
         $builder
             ->add('Montant' , TextType::class)
             ->add('Compte', EntityType::class,['class'=>Compte::class])
+            ->add('Caissier', EntityType::class,['class'=>Caissier::class])
         ;
     }
 

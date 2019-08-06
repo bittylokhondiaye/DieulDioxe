@@ -7,6 +7,7 @@ namespace Composer\Autoload;
 class ComposerStaticInitc19d33e19dc90313ad8e56f1366a0681
 {
     public static $files = array (
+        '92c8763cd6170fce6fcfe7e26b4e8c10' => __DIR__ . '/..' . '/symfony/phpunit-bridge/bootstrap.php',
         '0e6d7bf4a5811bfa5cf40c5ccd6fae6a' => __DIR__ . '/..' . '/symfony/polyfill-mbstring/bootstrap.php',
         '25072dd6e2470089de65ae7bf11d3109' => __DIR__ . '/..' . '/symfony/polyfill-php72/bootstrap.php',
         'f598d06aa772fa33d905e87be6398fb1' => __DIR__ . '/..' . '/symfony/polyfill-intl-idn/bootstrap.php',
@@ -89,6 +90,7 @@ class ComposerStaticInitc19d33e19dc90313ad8e56f1366a0681
             'Symfony\\Bundle\\MakerBundle\\' => 27,
             'Symfony\\Bundle\\FrameworkBundle\\' => 31,
             'Symfony\\Bridge\\Twig\\' => 20,
+            'Symfony\\Bridge\\PhpUnit\\' => 23,
             'Symfony\\Bridge\\Doctrine\\' => 24,
             'Sensio\\Bundle\\FrameworkExtraBundle\\' => 35,
         ),
@@ -377,6 +379,10 @@ class ComposerStaticInitc19d33e19dc90313ad8e56f1366a0681
         'Symfony\\Bridge\\Twig\\' => 
         array (
             0 => __DIR__ . '/..' . '/symfony/twig-bridge',
+        ),
+        'Symfony\\Bridge\\PhpUnit\\' => 
+        array (
+            0 => __DIR__ . '/..' . '/symfony/phpunit-bridge',
         ),
         'Symfony\\Bridge\\Doctrine\\' => 
         array (
