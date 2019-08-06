@@ -163,7 +163,9 @@ class PartenaireController extends AbstractController
         $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
         $compte->setSolde($solde);
         $compte->setPartenaire($partenaire);
-        
+        $date=timestamp($compte->getDateCreation());
+        $numero=$compte->getId().$date;
+        $compte->setNumeroCompte(intval($numero));
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($compte);
         if(count($errors)) {
@@ -217,8 +219,7 @@ class PartenaireController extends AbstractController
         $form->submit($values);
         $caissier=$entityManager->getRepository(Caissier::class)->find($values["caissier"]);
         $depot->setCaissier($caissier);
-        $compte=$entityManager->getRepository(Compte::class)->find($depot->getCompte("Compte"));
-        var_dump($compte);die;
+        $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
         $depot->setCompte($compte);
         $depot->setDate(new \DateTime());
         $errors = $validator->validate($depot);
