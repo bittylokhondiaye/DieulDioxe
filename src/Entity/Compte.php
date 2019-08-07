@@ -27,7 +27,7 @@ class Compte
     private $id;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="string")
      * @Assert\NotBlank()
      */
     private $NumeroCompte;
@@ -89,12 +89,12 @@ class Compte
         return $this->id;
     }
 
-    public function getNumeroCompte(): ?int
+    public function getNumeroCompte(): ?string
     {
         return $this->NumeroCompte;
     }
 
-    public function setNumeroCompte(int $NumeroCompte): self
+    public function setNumeroCompte(string $NumeroCompte): self
     {
         $this->NumeroCompte = $NumeroCompte;
 

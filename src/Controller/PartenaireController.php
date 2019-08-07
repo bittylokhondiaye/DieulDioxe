@@ -163,9 +163,8 @@ class PartenaireController extends AbstractController
         $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
         $compte->setSolde($solde);
         $compte->setPartenaire($partenaire);
-        $date=timestamp($compte->getDateCreation());
-        $numero=$compte->getId().$date;
-        $compte->setNumeroCompte(intval($numero));
+        $numero=date("Y").date("m").date("H").$compte->getId();
+        $compte->setNumeroCompte($numero);
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($compte);
         if(count($errors)) {
