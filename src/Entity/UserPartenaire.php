@@ -70,7 +70,7 @@ class UserPartenaire
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="UserPartenaire")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=true)
      */
     private $compte;
 

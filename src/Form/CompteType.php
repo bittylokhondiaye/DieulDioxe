@@ -17,7 +17,6 @@ class CompteType extends AbstractType
     {
         $builder
             ->add('NumeroCompte', TextType::class)
-            ->add('DateCreation', TextType::class)
             ->add('MontantInitial', TextType::class)
             ->add('MontantDeposer', TextType::class)
             ->add('Solde', TextType::class)

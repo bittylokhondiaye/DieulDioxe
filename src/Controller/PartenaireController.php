@@ -27,11 +27,9 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
+use App\Form\TransactionType;
 
-
-
-
- /**
+/**
      * @Route("/api") 
      */
 
@@ -163,7 +161,7 @@ class PartenaireController extends AbstractController
         $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
         $compte->setSolde($solde);
         $compte->setPartenaire($partenaire);
-        $numero=date("Y").date("m").date("H").$compte->getId();
+        $numero=date("Y").date("m").date("H").date("i").date("s").$compte->getId();
         $compte->setNumeroCompte($numero);
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($compte);
@@ -198,8 +196,8 @@ class PartenaireController extends AbstractController
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
-            'status' => 201,
-            'message' => 'Le Caissier a bien été ajouté'
+            'status4' => 201,
+            'message4' => 'Le Caissier a bien été ajouté'
         ];
         return new JsonResponse($data, 201);
     }
@@ -207,7 +205,7 @@ class PartenaireController extends AbstractController
 
     /**
      * @Route("/depot" , name="depotCompte", methods={"POST"})
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted("ROLE_CAISSIER")
      */
     public function depotCompte(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
@@ -247,9 +245,44 @@ class PartenaireController extends AbstractController
             ]);
         }
 
-        
-        
-       
+        $data = [
+            'status' => 201,
+            'message' => 'Le depot a été fait'
+        ];
+        return new JsonResponse($data, 201);
+    }
+
+    /**
+     * @Route("/makeTransaction" , name="makeTransaction", methods={"POST"})
+     * @IsGranted("ROLE_USER", "ROLE_ADMIN")
+     */
+    public function makeTransaction(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
+    {
+        $transaction= new Transaction();
+        $form =$this->createForm(TransactionType::class, $transaction);
+        $form=handleRequest($request);
+        $values=$request->resquest->all();
+        $form->submit($values);
+        $transaction->setDateTransaction(new \DateTime());
+        $compte=$entityManager->getRepository(UserPartenaire::class)->find($values["Compte"]);
+        $transaction->setCompte($compte);
+        $compte->setMontantInitial($compte->getSolde());
+        if($transaction->setType="envoi"){
+            $compte->setSolde($compte->getSolde()-$transaction->getMontant());
+        }
+        else if($transaction->setType="retrait")
+        {
+            $compte->setSolde($compte->getSolde()+$transaction->getMontant());
+        }
+        $entityManager->persist($compte);
+        $entityManager->flush();
+        $errors = $validator->validate($transaction);
+        if(count($errors)) {
+            return new Response($errors, 500, [
+                'Content-Type' => 'application/json'
+            ]);
+        }
+
         $data = [
             'status' => 201,
             'message' => 'Le compte a bien été ajouté'

@@ -38,10 +38,7 @@ class Transaction
      */
     private $NumeroExpediteur;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $CNIexpediteur;
+   
 
     /**
      * @ORM\Column(type="integer")
@@ -49,7 +46,7 @@ class Transaction
     private $NumeroDestinataire;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $CNIdestinataire;
 
@@ -62,6 +59,22 @@ class Transaction
      * @ORM\Column(type="text")
      */
     private $NomCompletDestinataire;
+
+    /**
+     * @ORM\Column(type="string", length=255)
+     */
+    private $CodeTransaction;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="transactions")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $Compte;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $Frais;
 
     public function getId(): ?int
     {
@@ -116,17 +129,6 @@ class Transaction
         return $this;
     }
 
-    public function getCNIexpediteur(): ?int
-    {
-        return $this->CNIexpediteur;
-    }
-
-    public function setCNIexpediteur(int $CNIexpediteur): self
-    {
-        $this->CNIexpediteur = $CNIexpediteur;
-
-        return $this;
-    }
 
     public function getNumeroDestinataire(): ?int
     {
@@ -172,6 +174,42 @@ class Transaction
     public function setNomCompletDestinataire(string $NomCompletDestinataire): self
     {
         $this->NomCompletDestinataire = $NomCompletDestinataire;
+
+        return $this;
+    }
+
+    public function getCodeTransaction(): ?string
+    {
+        return $this->CodeTransaction;
+    }
+
+    public function setCodeTransaction(string $CodeTransaction): self
+    {
+        $this->CodeTransaction = $CodeTransaction;
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->Compte;
+    }
+
+    public function setCompte(?Compte $Compte): self
+    {
+        $this->Compte = $Compte;
+
+        return $this;
+    }
+
+    public function getFrais(): ?int
+    {
+        return $this->Frais;
+    }
+
+    public function setFrais(int $Frais): self
+    {
+        $this->Frais = $Frais;
 
         return $this;
     }
