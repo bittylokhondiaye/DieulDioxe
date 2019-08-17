@@ -70,7 +70,7 @@ class User implements UserInterface
      * @ORM\Column(type="string", length=255)
      *
      * @var string
-     * @Assert\NotBlank()
+     * 
      */
     private $imageName;
 
@@ -83,6 +83,11 @@ class User implements UserInterface
      * @Assert\NotBlank()
      */
     private $updatedAt;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
+     */
+    private $Compte;
 
     
     public function getId(): ?int
@@ -240,6 +245,18 @@ class User implements UserInterface
     public function setUpdatedAt(\DateTimeInterface $updatedAt)
     {
         $this->updatedAt = $updatedAt;
+
+        return $this;
+    }
+
+    public function getCompte(): ?Compte
+    {
+        return $this->Compte;
+    }
+
+    public function setCompte(?Compte $Compte): self
+    {
+        $this->Compte = $Compte;
 
         return $this;
     }

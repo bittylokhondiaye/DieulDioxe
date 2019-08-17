@@ -6,6 +6,7 @@ use App\Entity\Transaction;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\NumberType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 
@@ -23,6 +24,7 @@ class TransactionType extends AbstractType
             ->add('CNIdestinataire', NumberType::class)
             ->add('NomCompletExpediteur', TextType::class)
             ->add('NomCompletDestinataire', TextType::class)
+            /* ->add('Compte', EntityType::class,['class'=>Compte::class]) */
         ;
     }
 

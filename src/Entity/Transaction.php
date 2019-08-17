@@ -4,6 +4,7 @@ namespace App\Entity;
 
 use ApiPlatform\Core\Annotation\ApiResource;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * @ApiResource()
@@ -34,14 +35,14 @@ class Transaction
     private $Montant;
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer" ,nullable=true)
      */
     private $NumeroExpediteur;
 
    
 
     /**
-     * @ORM\Column(type="integer")
+     * @ORM\Column(type="integer", nullable=true)
      */
     private $NumeroDestinataire;
 
@@ -51,17 +52,17 @@ class Transaction
     private $CNIdestinataire;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $NomCompletExpediteur;
 
     /**
-     * @ORM\Column(type="text")
+     * @ORM\Column(type="text", nullable=true)
      */
     private $NomCompletDestinataire;
 
     /**
-     * @ORM\Column(type="string", length=255)
+     * @ORM\Column(type="string")
      */
     private $CodeTransaction;
 
@@ -75,6 +76,21 @@ class Transaction
      * @ORM\Column(type="integer")
      */
     private $Frais;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $CommissionEtat;
+
+    /**
+     * @ORM\Column(type="integer")
+     */
+    private $CommissionSystem;
+
+    /**
+     * @ORM\Column(type="integer", nullable=true)
+     */
+    private $CommissionPartenaire;
 
     public function getId(): ?int
     {
@@ -210,6 +226,42 @@ class Transaction
     public function setFrais(int $Frais): self
     {
         $this->Frais = $Frais;
+
+        return $this;
+    }
+
+    public function getCommissionEtat(): ?int
+    {
+        return $this->CommissionEtat;
+    }
+
+    public function setCommissionEtat(int $CommissionEtat): self
+    {
+        $this->CommissionEtat = $CommissionEtat;
+
+        return $this;
+    }
+
+    public function getCommissionSystem(): ?int
+    {
+        return $this->CommissionSystem;
+    }
+
+    public function setCommissionSystem(int $CommissionSystem): self
+    {
+        $this->CommissionSystem = $CommissionSystem;
+
+        return $this;
+    }
+
+    public function getCommissionPartenaire(): ?int
+    {
+        return $this->CommissionPartenaire;
+    }
+
+    public function setCommissionPartenaire(int $CommissionPartenaire): self
+    {
+        $this->CommissionPartenaire = $CommissionPartenaire;
 
         return $this;
     }

@@ -3,19 +3,20 @@
 namespace App\Controller;
 
 use App\Entity\User;
-use App\Form\UserType;
+use App\Entity\Compte;
 
-use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use App\Form\UserType;
+use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
-use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use Doctrine\ORM\EntityManagerInterface;
-use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Serializer\SerializerInterface;
+use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
+use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
  
 
 
@@ -39,7 +40,8 @@ class SecurityController extends AbstractController
             $form->submit($values);
             $files=$request->files->all()['imageName'];
 
-           
+            $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
+            $user->setCompte($compte);
             $user->setEmail($values["email"]);
             $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
             $user->setImageFile($files);

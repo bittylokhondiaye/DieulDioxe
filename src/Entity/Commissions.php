@@ -33,20 +33,6 @@ class Commissions
      */
     private $Frais;
 
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $CommissionEtat;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $CommissionSysteme;
-
-    /**
-     * @ORM\Column(type="integer")
-     */
-    private $CommissionPartenaire;
 
     public function getId(): ?int
     {
@@ -89,39 +75,5 @@ class Commissions
         return $this;
     }
 
-    public function getCommissionEtat(): ?int
-    {
-        return $this->CommissionEtat;
-    }
 
-    public function setCommissionEtat(int $CommissionEtat): self
-    {
-        $this->CommissionEtat = $CommissionEtat;
-
-        return $this;
-    }
-
-    public function getCommissionSysteme(): ?int
-    {
-        return $this->CommissionSysteme;
-    }
-
-    public function setCommissionSysteme(int $CommissionSysteme): self
-    {
-        $this->CommissionSysteme = $CommissionSysteme;
-
-        return $this;
-    }
-
-    public function getCommissionPartenaire(): ?int
-    {
-        return $this->CommissionPartenaire;
-    }
-
-    public function setCommissionPartenaire(int $CommissionPartenaire): self
-    {
-        $this->CommissionPartenaire = $CommissionPartenaire;
-
-        return $this;
-    }
 }

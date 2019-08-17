@@ -11,6 +11,7 @@ use App\Form\CaissierType;
 use App\Entity\Caissier;
 use App\Form\CompteType;
 use App\Entity\Partenaire;
+use App\Entity\Transaction;
 use App\Form\PartenaireType;
 use App\Entity\UserPartenaire;
 use App\Repository\PartenaireRepository;
@@ -103,8 +104,8 @@ class PartenaireController extends AbstractController
         $form->submit($values);
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
-        $compte->setMontantDeposer(0);
-        $compte->setSolde(0);
+        $compte->setMontantDeposer(75000);
+        $compte->setSolde($compte->getMontantInitial()+$compte->getMontantDeposer());
         $compte->setPartenaire($partenaire);
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($compte);
@@ -254,27 +255,58 @@ class PartenaireController extends AbstractController
 
     /**
      * @Route("/makeTransaction" , name="makeTransaction", methods={"POST"})
-     * @IsGranted("ROLE_USER", "ROLE_ADMIN")
+     * @IsGranted("ROLE_USER")
      */
     public function makeTransaction(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
         $transaction= new Transaction();
-        $form =$this->createForm(TransactionType::class, $transaction);
-        $form=handleRequest($request);
-        $values=$request->resquest->all();
+        $form=$this->createForm(TransactionType::class, $transaction);
+        $form->handleRequest($request);
+        $values=$request->request->all();
         $form->submit($values);
         $transaction->setDateTransaction(new \DateTime());
-        $compte=$entityManager->getRepository(UserPartenaire::class)->find($values["Compte"]);
+        $code=date("Y").date("m").date("H").date("i").date("s");
+        $transaction->setCodeTransaction($code);
+    
+        $user = $this->getUser();
+        $compte=$user->getCompte();
+        $compte=$entityManager->getRepository(Compte::class)->find($compte);
         $transaction->setCompte($compte);
         $compte->setMontantInitial($compte->getSolde());
-        if($transaction->setType="envoi"){
-            $compte->setSolde($compte->getSolde()-$transaction->getMontant());
+        $montant=$transaction->getMontant();
+        
+        $borneInf=array(1,501,1001,1101,1501,2001,3001,5001,6001,10001,12001,15001,17001,20001,25001,30001,35001,40001,50001,60001,70001,75001,100001,125001,150001,175001,200001,250001,300001,350001,400001,500001,600001,700001,750001,1000001,1250001,1500001,2000001);
+        $borneSup=array(500,1000,1100,1500,2000,3000,5000,6000,10000,12000,15000,17000,20000,25000,30000,35000,40000,50000,60000,70000,75000,100000,125000,150000,175000,200000,250000,300000,350000,400000,500000,600000,700000,75000,1000000,1250000,1500000,2000000,3000000);
+        $frais=array(50,100,100,100,200,200,400,600,600,900,900,1000,100,1500,1500,1500,1800,1800,2000,2700,2700,3000,3600,3600,3800,4600,6400,8000,8500,9900,11900,11900,13600,14500,21700,24500,31900,36000,0.2);
+        for ($i=0;$i<count($borneSup) && !($montant>=$borneInf[$i] && $montant<=$borneSup[$i]);$i++) {
+                $Frais=$frais[$i];
         }
-        else if($transaction->setType="retrait")
+        $transaction->setFrais($Frais);
+        $etat=($transaction->getFrais()*30)/100;
+        $transaction->setCommissionEtat($etat);
+        $system=($transaction->getFrais()*40)/100;
+        $transaction->setCommissionSystem($system);
+        $type=$transaction->getType();
+        if($type=="envoi" && $compte->getSolde()>=$montant){
+            $partenaire=($transaction->getFrais()*10)/100;
+            $transaction->setCommissionPartenaire($partenaire);
+            $compte->setSolde(($compte->getSolde()-$transaction->getMontant())+$partenaire);
+            $compte->setMontantDeposer($partenaire);
+            $entityManager->persist($transaction);
+        $entityManager->flush();
+        }
+        else if($type=="retrait" )
         {
-            $compte->setSolde($compte->getSolde()+$transaction->getMontant());
+                $partenaire=($transaction->getFrais()*20)/100;
+                $transaction->setCommissionPartenaire($partenaire);
+                $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
+                $compte->setMontantDeposer($transaction->getMontant()+$partenaire);
+                $entityManager->persist($transaction);
+        $entityManager->flush();
         }
         $entityManager->persist($compte);
+        $entityManager->flush();
+        $entityManager->persist($transaction);
         $entityManager->flush();
         $errors = $validator->validate($transaction);
         if(count($errors)) {
@@ -285,9 +317,15 @@ class PartenaireController extends AbstractController
 
         $data = [
             'status' => 201,
-            'message' => 'Le compte a bien été ajouté'
+            'message' => 'La transaction a bien été faite' 
         ];
         return new JsonResponse($data, 201);
     }
+
+    /**
+     * @Route("/bloquer/{id}" , name="bloquer", methods={"POST"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
+     */
+    public fun
 
 }

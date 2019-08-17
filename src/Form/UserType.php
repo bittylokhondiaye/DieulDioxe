@@ -21,7 +21,7 @@ class UserType extends AbstractType
             ->add('Statut', TextType::class)
             ->add('imageFile', VichImageType::class)
             ->add('updatedAt',TextType::class )
-
+            ->add('Compte', EntityType::class,['class'=>Compte::class])
         ;
     }
 
