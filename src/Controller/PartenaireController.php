@@ -247,8 +247,8 @@ class PartenaireController extends AbstractController
         }
 
         $data = [
-            'status' => 201,
-            'message' => 'Le depot a été fait'
+            'status3' => 201,
+            'message3' => 'Le depot a été fait'
         ];
         return new JsonResponse($data, 201);
     }
@@ -323,9 +323,60 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/bloquer/{id}" , name="bloquer", methods={"POST"})
+     * @Route("/bloquer/{id}" , name="bloquer", methods={"PUT"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
-    public fun
+    public function bloquer(Request $request,User $user,UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
+    {
+        $partenaireUpdate=$entityManager->getRepository(User::class)->find($user->getId());
+        $values = json_decode($request->getContent());
+            $user->getCompte();
+            $user->getEmail();
+            $user->getPassword();
+            /* $user->getImageFile(); */
+            $user->getImageName();
+            if($user->getStatut()=="BLOQUER"){
+                $partenaireUpdate->setStatut("DEBLOQUER");
+            }
+            else{
+                $partenaireUpdate->setStatut("BLOQUER");
+            }
+            $Statut=$partenaireUpdate->getStatut();
+            if($Statut=="DEBLOQUER"){
+                $roles=["ROLE_BLOQUE"];    
+            }
+            else{
+                if($user->getProfile()=="user"){
+                    $roles=["ROLE_USER"];
+                }
+                else if($user->getProfile()=="admin"){
+                    $roles=["ROLE_ADMIN"];
+                }
+                else if($user->getProfile()=="superAdmin"){
+                    $roles=["ROLE_SUPER_ADMIN"];
+                }
+                else if($user->getProfile()=="caissier"){
+                    $roles=["ROLE_CAISSIER"];
+                }
+            }
+            $user->setRoles($roles);
+        $errors = $validator->validate($partenaireUpdate);
+            if(count($errors)) {
+                $errors = $serializer->serialize($errors, 'json');
+                return new Response($errors, 500, [
+                    'Content-Type' => 'application/json'
+                ]);
+            }
+            
+            $entityManager->flush();
+
+            $data = [
+                'status' => 201,
+                'message' => 'L\'utilisateur a été mis a jour'
+            ];
+
+            return new JsonResponse($data, 201);
+
+    }
 
 }

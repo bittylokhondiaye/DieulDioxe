@@ -62,7 +62,7 @@ class User implements UserInterface
      * @Vich\UploadableField(mapping="products", fileNameProperty="imageName")
      * 
      * @var File
-     * @Assert\NotBlank()
+     * 
      */
     private $imageFile;
 
