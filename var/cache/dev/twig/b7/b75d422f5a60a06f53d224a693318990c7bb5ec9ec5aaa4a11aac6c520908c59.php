@@ -104,7 +104,6 @@ Attendu que Wari est autorisée par la Loi de Transfert d'argent, à effectuer d
 transfert d’argent.
 Wari et ";
         // line 26
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["Partenaire"]) || array_key_exists("Partenaire", $context) ? $context["Partenaire"] : (function () { throw new RuntimeError('Variable "Partenaire" does not exist.', 26, $this->source); })()), "RaisonSocial", [], "any", false, false, false, 26), "html", null, true);
         echo " Ont décidé de nouer un partenariat
 mutuellement profitable.
 A cet effet, le présent contrat de partenariat (ci-après désigné le « Contrat ») a été conclu
@@ -113,9 +112,6 @@ Wari, dont le siège social est à Dakar 20, Rue Amadou Assane Ndoye, Dakar repr
 par son DIRECTEUR GENERAL Monsieur Kabirou MBODJ.
 Ci-après désignée LE PARTENAIRE ";
         // line 32
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["Partenaire"]) || array_key_exists("Partenaire", $context) ? $context["Partenaire"] : (function () { throw new RuntimeError('Variable "Partenaire" does not exist.', 32, $this->source); })()), "Prenom", [], "any", false, false, false, 32), "html", null, true);
-        echo " ";
-        echo twig_escape_filter($this->env, twig_get_attribute($this->env, $this->source, (isset($context["partenaire"]) || array_key_exists("partenaire", $context) ? $context["partenaire"] : (function () { throw new RuntimeError('Variable "partenaire" does not exist.', 32, $this->source); })()), "Nom", [], "any", false, false, false, 32), "html", null, true);
         echo " dont le siège social
 ………………………………………………………………………est situé au -(Sénégal), représentée
 par…………………………………………………agissant en qualité de gérant,
@@ -138,7 +134,7 @@ Présentation du Système Touba transfert.</p>
 
     public function getDebugInfo()
     {
-        return array (  116 => 32,  107 => 26,  102 => 23,  98 => 14,  91 => 9,  79 => 7,  66 => 3,  59 => 9,  56 => 8,  54 => 7,  49 => 4,  47 => 3,  43 => 1,);
+        return array (  115 => 32,  107 => 26,  102 => 23,  98 => 14,  91 => 9,  79 => 7,  66 => 3,  59 => 9,  56 => 8,  54 => 7,  49 => 4,  47 => 3,  43 => 1,);
     }
 
     public function getSourceContext()
@@ -168,13 +164,13 @@ Présentation du Système Touba transfert.</p>
     <p>PRÉAMBULE :
 Attendu que Wari est autorisée par la Loi de Transfert d'argent, à effectuer des opérations de
 transfert d’argent.
-Wari et {{Partenaire.RaisonSocial}} Ont décidé de nouer un partenariat
+Wari et {# {{Partenaire.RaisonSocial}} #} Ont décidé de nouer un partenariat
 mutuellement profitable.
 A cet effet, le présent contrat de partenariat (ci-après désigné le « Contrat ») a été conclu
 ENTRE
 Wari, dont le siège social est à Dakar 20, Rue Amadou Assane Ndoye, Dakar représentée
 par son DIRECTEUR GENERAL Monsieur Kabirou MBODJ.
-Ci-après désignée LE PARTENAIRE {{Partenaire.Prenom}} {{partenaire.Nom}} dont le siège social
+Ci-après désignée LE PARTENAIRE {# {{Partenaire.Prenom}} {{partenaire.Nom}} #} dont le siège social
 ………………………………………………………………………est situé au -(Sénégal), représentée
 par…………………………………………………agissant en qualité de gérant,
 Ci-après désignée LE DISTRIBUTEUR
