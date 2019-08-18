@@ -8,8 +8,8 @@
 return [
     false, // $matchHost
     [ // $staticRoutes
-        '/api/partenaire' => [[['_route' => 'partenaire', '_controller' => 'App\\Controller\\PartenaireController::index'], null, null, null, false, false, null]],
-        '/api/api/partenaires' => [[['_route' => 'ajouPartenaire', '_controller' => 'App\\Controller\\PartenaireController::ajoutPartenaire'], null, ['POST' => 0], null, false, false, null]],
+        '/partenaire' => [[['_route' => 'partenaire', '_controller' => 'App\\Controller\\PartenaireController::index'], null, null, null, false, false, null]],
+        '/api/partenaires' => [[['_route' => 'ajouPartenaire', '_controller' => 'App\\Controller\\PartenaireController::ajoutPartenaire'], null, ['POST' => 0], null, false, false, null]],
         '/api/userPartenaires' => [[['_route' => 'addUserPartenaire', '_controller' => 'App\\Controller\\PartenaireController::addUserPartenaire'], null, ['POST' => 0], null, false, false, null]],
         '/api/api/compte' => [[['_route' => 'addCompte', '_controller' => 'App\\Controller\\PartenaireController::addCompte'], null, ['POST' => 0], null, false, false, null]],
         '/api/api/caissier' => [[['_route' => 'addCaissier', '_controller' => 'App\\Controller\\PartenaireController::addCaissier'], null, ['POST' => 0], null, false, false, null]],

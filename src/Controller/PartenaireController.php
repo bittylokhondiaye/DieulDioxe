@@ -29,10 +29,10 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\TransactionType;
+use Dompdf\Dompdf;
+use Dompdf\Options;
 
-/**
-     * @Route("/api") 
-     */
+
 
 class PartenaireController extends AbstractController
 {
@@ -41,9 +41,32 @@ class PartenaireController extends AbstractController
      */
     public function index()
     {
-        return $this->render('partenaire/index.html.twig', [
+        // Configure Dompdf according to your needs
+        $pdfOptions = new Options();
+        $pdfOptions->set('defaultFont', 'Arial');
+        
+        // Instantiate Dompdf with our options
+        $dompdf = new Dompdf($pdfOptions);
+        
+        // Retrieve the HTML generated in our twig file
+        $html = $this->renderView('partenaire/index.html.twig', [
             'controller_name' => 'PartenaireController',
         ]);
+        
+        // Load HTML to Dompdf
+        $dompdf->loadHtml($html);
+        
+        // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
+        $dompdf->setPaper('A4', 'portrait');
+
+        // Render the HTML as PDF
+        $dompdf->render();
+
+        // Output the generated PDF to Browser (force download)
+        $dompdf->stream("contrat de partenariat.pdf", [
+            "Attachment" => false
+        ]);
+        
     }
 
     /**
@@ -125,7 +148,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/userPartenaires", name="addUserPartenaire", methods={"POST"})
+     * @Route("/api/userPartenaires", name="addUserPartenaire", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
     public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
@@ -146,7 +169,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/compte" , name="addCompte", methods={"POST"})
+     * @Route("/api/api/compte" , name="addCompte", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
@@ -182,7 +205,7 @@ class PartenaireController extends AbstractController
 
 
     /**
-     * @Route("/api/caissier" , name="addCaissier", methods={"POST"})
+     * @Route("/api/api/caissier" , name="addCaissier", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function addCaissier(Request $request, SerializerInterface $serialize,EntityManagerInterface $entityManager,ValidatorInterface $validator)
@@ -205,7 +228,7 @@ class PartenaireController extends AbstractController
 
 
     /**
-     * @Route("/depot" , name="depotCompte", methods={"POST"})
+     * @Route("/api/depot" , name="depotCompte", methods={"POST"})
      * @IsGranted("ROLE_CAISSIER")
      */
     public function depotCompte(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
@@ -254,7 +277,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/makeTransaction" , name="makeTransaction", methods={"POST"})
+     * @Route("/api/makeTransaction" , name="makeTransaction", methods={"POST"})
      * @IsGranted("ROLE_USER")
      */
     public function makeTransaction(Request $request,EntityManagerInterface $entityManager,ValidatorInterface $validator)
@@ -323,7 +346,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/bloquer/{id}" , name="bloquer", methods={"PUT"})
+     * @Route("/api/bloquer/{id}" , name="bloquer", methods={"PUT"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function bloquer(Request $request,User $user,UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
@@ -333,7 +356,7 @@ class PartenaireController extends AbstractController
             $user->getCompte();
             $user->getEmail();
             $user->getPassword();
-            /* $user->getImageFile(); */
+            
             $user->getImageName();
             if($user->getStatut()=="BLOQUER"){
                 $partenaireUpdate->setStatut("DEBLOQUER");

@@ -16,6 +16,6 @@ if (!\class_exists(srcApp_KernelDevDebugContainer::class, false)) {
 
 return new \ContainerAXopOT6\srcApp_KernelDevDebugContainer([
     'container.build_hash' => 'AXopOT6',
-    'container.build_id' => 'a9232a87',
-    'container.build_time' => 1566063196,
+    'container.build_id' => 'b4545c82',
+    'container.build_time' => 1566067073,
 ], __DIR__.\DIRECTORY_SEPARATOR.'ContainerAXopOT6');
