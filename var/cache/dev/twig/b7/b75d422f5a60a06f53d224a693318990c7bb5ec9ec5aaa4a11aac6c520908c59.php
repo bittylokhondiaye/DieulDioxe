@@ -102,15 +102,15 @@ class __TwigTemplate_ce4ff3a1ff2ee02258b95cc5747fa5b5ad40a2db5f37fd99493ff126ac5
         echo "    <p>PRÉAMBULE :
 Attendu que Wari est autorisée par la Loi de Transfert d'argent, à effectuer des opérations de
 transfert d’argent.
-Wari et ";
+Wari et .....................";
         // line 26
-        echo " Ont décidé de nouer un partenariat
+        echo " ont décidé de nouer un partenariat
 mutuellement profitable.
 A cet effet, le présent contrat de partenariat (ci-après désigné le « Contrat ») a été conclu
 ENTRE
 Wari, dont le siège social est à Dakar 20, Rue Amadou Assane Ndoye, Dakar représentée
 par son DIRECTEUR GENERAL Monsieur Kabirou MBODJ.
-Ci-après désignée LE PARTENAIRE ";
+Ci-après désignée LE PARTENAIRE................... ..... ";
         // line 32
         echo " dont le siège social
 ………………………………………………………………………est situé au -(Sénégal), représentée
@@ -164,13 +164,13 @@ Présentation du Système Touba transfert.</p>
     <p>PRÉAMBULE :
 Attendu que Wari est autorisée par la Loi de Transfert d'argent, à effectuer des opérations de
 transfert d’argent.
-Wari et {# {{Partenaire.RaisonSocial}} #} Ont décidé de nouer un partenariat
+Wari et .....................{# {{Partenaire.RaisonSocial}} #} ont décidé de nouer un partenariat
 mutuellement profitable.
 A cet effet, le présent contrat de partenariat (ci-après désigné le « Contrat ») a été conclu
 ENTRE
 Wari, dont le siège social est à Dakar 20, Rue Amadou Assane Ndoye, Dakar représentée
 par son DIRECTEUR GENERAL Monsieur Kabirou MBODJ.
-Ci-après désignée LE PARTENAIRE {# {{Partenaire.Prenom}} {{partenaire.Nom}} #} dont le siège social
+Ci-après désignée LE PARTENAIRE................... ..... {# {{Partenaire.Prenom}} {{partenaire.Nom}} #} dont le siège social
 ………………………………………………………………………est situé au -(Sénégal), représentée
 par…………………………………………………agissant en qualité de gérant,
 Ci-après désignée LE DISTRIBUTEUR

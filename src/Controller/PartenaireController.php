@@ -402,4 +402,14 @@ class PartenaireController extends AbstractController
 
     }
 
+    /**
+     * @Route("/listerPartenaire" , name="listerPartenaire", methods={"GET"})
+    */
+
+    public function listerPartenaire(EntityManagerInterface $entityManager,Request $request)
+    {
+        $partenaire=$entityManager->getRepository(Partenaire::class)->findAll();
+        var_dump($partenaire);
+        
+    }
 }
