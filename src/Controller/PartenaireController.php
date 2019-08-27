@@ -409,7 +409,7 @@ class PartenaireController extends AbstractController
     public function listerPartenaire(EntityManagerInterface $entityManager,Request $request)
     {
         $partenaire=$entityManager->getRepository(Partenaire::class)->findAll();
-        var_dump($partenaire);
+        return ($partenaire);
         
     }
 }
