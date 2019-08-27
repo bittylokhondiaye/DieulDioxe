@@ -72,10 +72,10 @@ body {
 </head>
 <body>
 
-<div class="navbar">
+<div class="navbar" *ngIf="isAuthenticated()">
   <a href="#home">Envoi</a>
   <a href="#news">Retrait</a>
-  <div class="dropdown" *ngIf="isAuthenticated()">
+  <div class="dropdown" >
     <button class="dropbtn">Partenaire 
       <em class="fa fa-caret-down"></em>
     </button>

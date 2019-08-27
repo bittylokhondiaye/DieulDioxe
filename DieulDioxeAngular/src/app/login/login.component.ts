@@ -20,7 +20,9 @@ export class LoginComponent implements OnInit {
       .subscribe(resp=>{
         console.log(resp);
         //console.log(resp.headers.get('Authorization'));
-        let jwt=resp.headers.get('Authorization');
+        /* let jwt=resp.headers.get('Authorization');
+        this.authService.saveToken(jwt); */
+        let jwt=resp.body['token'];
         this.authService.saveToken(jwt);
       },err=>{
 

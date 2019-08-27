@@ -34,19 +34,24 @@ export class AuthenticationService {
   }
 
   isAdmin(){
-    return this.roles.indexOf('ADMIN')>=0;
+    return this.roles.indexOf('ROLE_ADMIN')>=0;
   }
 
   isUser(){
-    return this.roles.indexOf('USER')>=0;
+    return this.roles.indexOf('ROLE_USER')>=0;
   }
 
   isSuperAdmin(){
-    return this.roles.indexOf('SUPER_ADMIN')>=0;
+    return this.roles.indexOf('ROLE_SUPER_ADMIN')>=0;
   }
 
   isAuthenticated(){
     return this.roles && (this.isAdmin || this.isUser || this.isSuperAdmin );
+  }
+
+  loadToken(){
+    this.jwt=localStorage.getItem('token');
+    this.parseJWT();
   }
 }
 
