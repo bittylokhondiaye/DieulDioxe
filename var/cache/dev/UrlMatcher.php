@@ -15,7 +15,7 @@ return [
         '/api/api/caissier' => [[['_route' => 'addCaissier', '_controller' => 'App\\Controller\\PartenaireController::addCaissier'], null, ['POST' => 0], null, false, false, null]],
         '/api/depot' => [[['_route' => 'depotCompte', '_controller' => 'App\\Controller\\PartenaireController::depotCompte'], null, ['POST' => 0], null, false, false, null]],
         '/api/makeTransaction' => [[['_route' => 'makeTransaction', '_controller' => 'App\\Controller\\PartenaireController::makeTransaction'], null, ['POST' => 0], null, false, false, null]],
-        '/listerPartenaire' => [[['_route' => 'listerPartenaire', '_controller' => 'App\\Controller\\PartenaireController::listerPartenaire'], null, ['GET' => 0], null, false, false, null]],
+        '/api/listerPartenaire' => [[['_route' => 'listerPartenaire', '_controller' => 'App\\Controller\\PartenaireController::listerPartenaire'], null, ['GET' => 0], null, true, false, null]],
         '/api/register' => [[['_route' => 'register', '_controller' => 'App\\Controller\\SecurityController::register'], null, ['POST' => 0], null, false, false, null]],
         '/api/login' => [[['_route' => 'login', '_controller' => 'App\\Controller\\SecurityController::login'], null, ['POST' => 0], null, false, false, null]],
         '/' => [[['_route' => 'index', '_controller' => 'App\\Controller\\DefaultController::index'], null, null, null, false, false, null]],

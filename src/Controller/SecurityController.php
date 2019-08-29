@@ -86,6 +86,7 @@ class SecurityController extends AbstractController
 
      /**
      * @Route("/login", name="login", methods={"POST"})
+     * @IsGranted("Access-Control-Allow-Origin")
      */
     public function login(Request $request)
     {
@@ -94,7 +95,7 @@ class SecurityController extends AbstractController
             'username' => $user->getUsername(),
             'roles' => $user->getRoles()
         ]);
+       
     }
 
-    
 }

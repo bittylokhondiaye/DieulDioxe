@@ -1,0 +1,28 @@
+<table  class="table">
+  <thead class="black white-text">
+    <tr>
+      <th > Id </th>
+      <th > Prenom </th>
+      <th > Nom </th>
+      <th > Telephone </th>
+      <th > CNI </th>
+      <th > NINEA </th>
+      <th > Adresse </th>
+      <th > Raison Social </th>
+      <th > Email </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr  *ngFor="let partenaires of partenaire">
+      <td>{{partenaires.Id}}</td>
+      <td>{{ partenaires.Prenom}}</td>
+      <td>{{ partenaires.Nom }}</td>
+      <td>{{ partenaires.Telephone }}</td>
+      <td>{{ partenaires.CNI }}</td>
+      <td>{{ partenaires.NINEA }}</td>
+      <td>{{ partenaires.Adresse }}</td>
+      <td>{{ partenaires.RaisonSocial }}</td>
+      <td>{{ partenaires.Email }}</td>
+    </tr>
+  </tbody>
+</table>

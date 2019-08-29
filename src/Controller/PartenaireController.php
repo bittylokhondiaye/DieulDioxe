@@ -403,13 +403,18 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/listerPartenaire" , name="listerPartenaire", methods={"GET"})
+     * @Route("/api/listerPartenaire/" , name="listerPartenaire", methods={"GET"})
     */
-
-    public function listerPartenaire(EntityManagerInterface $entityManager,Request $request)
+    
+    public function listerPartenaire(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
     {
-        $partenaire=$entityManager->getRepository(Partenaire::class)->findAll();
-        return ($partenaire);
+        /* header("Access-Control-Allow-Origin: *");
+        header.append("Access-Control-Allow-Origin: *"); */
+        $partenaire = $entityManager->getRepository(Partenaire::class)->findAll();
+        $data = $serializer->serialize($partenaire, 'json');
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
         
     }
 }
