@@ -21,6 +21,7 @@ import { AjoutPartenaireComponent } from './ajout-partenaire/ajout-partenaire.co
 import { AjoutUserComponent } from './ajout-user/ajout-user.component';
 import {MatSelectModule} from '@angular/material/select';
 import { AjoutCompteComponent } from './ajout-compte/ajout-compte.component';
+import { DepotCompteComponent } from './depot-compte/depot-compte.component';
 
 
 @NgModule({
@@ -31,7 +32,8 @@ import { AjoutCompteComponent } from './ajout-compte/ajout-compte.component';
     UserComponent,
     AjoutPartenaireComponent,
     AjoutUserComponent,
-    AjoutCompteComponent
+    AjoutCompteComponent,
+    DepotCompteComponent
   ],
   imports: [
     BrowserModule,

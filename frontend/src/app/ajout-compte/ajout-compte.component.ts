@@ -18,12 +18,13 @@ export class AjoutCompteComponent implements OnInit {
  constructor( private http:HttpClient, private _partenaire:PartenaireService) { }
 
  ngOnInit() {
+  this.initForm();
     this._partenaire.getPartenaire()
     .subscribe( data =>{
      this.partenaire = data
      console.log(data);
     });
-    this.initForm();
+    
  }
 
  initForm() {
@@ -36,10 +37,10 @@ export class AjoutCompteComponent implements OnInit {
   onSubmitForm() {
     const formValue = this.compteForm.value;
     const newCompte = new Compte(
-    formValue['email'],
-    formValue['password'],
-      //formValue['imageName']
+    formValue['MontantDeposer'],
+    formValue['Partenaire'],
     );
+    this._partenaire.postCompte(newCompte);
   }
 
 
@@ -47,4 +48,4 @@ export class AjoutCompteComponent implements OnInit {
 }
   
 
-}
+
