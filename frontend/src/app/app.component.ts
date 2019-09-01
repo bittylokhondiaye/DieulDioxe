@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { AuthenticationService } from './authentication.service';
 
 @Component({
@@ -8,7 +8,11 @@ import { AuthenticationService } from './authentication.service';
 })
 export class AppComponent implements OnInit {
   
-  
+  @ViewChild('clickMe') clickMe: any;
+
+  clickOnHover() {
+    this.clickMe._elementRef.nativeElement.click();
+  }
   
   title = 'DieulDioxeAngular';
 

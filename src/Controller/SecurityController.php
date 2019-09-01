@@ -38,16 +38,21 @@ class SecurityController extends AbstractController
             $form->handleRequest($request);
             $values=$request->request->all();
             $form->submit($values);
-            $files=$request->files->all()['imageName'];
+            if($files=$request->files->all()){
+                $user->setImageFile($files['imageName']);
+            }
+            //$files=$request->files->all()['imageName'];
 
-            $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
-            $user->setCompte($compte);
+            //$compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
+            //$user->setCompte($compte);
             $user->setEmail($values["email"]);
             $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
-            $user->setImageFile($files);
+            //$user->setImageFile($files);
+            $user->setUpdatedAt(new \DateTime());
             $user->setProfile($values["Profile"]);
             $user->setStatut("BLOQUER");
             $Profile=$values["Profile"];
+            $Profile=$user->getProfile();
             $roles=[];
             if($Profile=="user" ){
                 $roles=["ROLE_USER"];

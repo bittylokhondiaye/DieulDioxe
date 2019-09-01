@@ -2,7 +2,9 @@
 
 namespace App\Form;
 
+use App\Entity\Compte;
 use App\Entity\User;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Vich\UploaderBundle\Form\Type\VichImageType;
@@ -21,7 +23,7 @@ class UserType extends AbstractType
             ->add('Statut', TextType::class)
             ->add('imageFile', VichImageType::class)
             ->add('updatedAt',TextType::class )
-            ->add('Compte', EntityType::class,['class'=>Compte::class])
+            //->add('Compte', EntityType::class,['class'=>Compte::class])
         ;
     }
 

@@ -1,0 +1,16 @@
+body{
+    text-align: center;
+    margin: auto;
+}
+
+.centrer{
+    margin-left: 500px;
+    margin-top: 100px;
+}
+
+hr{
+    size:1px solid;
+    width:250px;
+    float:left;
+    margin-right: 0%;
+}

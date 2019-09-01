@@ -46,7 +46,6 @@ class User implements UserInterface
 
     /**
      * @ORM\Column(type="string", length=255)
-     * @Assert\NotBlank()
      */
     private $Profile;
 
@@ -86,6 +85,7 @@ class User implements UserInterface
 
     /**
      * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
+     * @ORM\Column(nullable=true)
      */
     private $Compte;
 

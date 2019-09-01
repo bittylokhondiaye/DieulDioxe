@@ -25,7 +25,7 @@ export class LoginComponent implements OnInit {
         let jwt=resp.body['token'];
         this.authService.saveToken(jwt);
       },err=>{
-
+          console.log(err);
       })
   }
   

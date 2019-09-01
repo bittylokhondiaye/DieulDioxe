@@ -29,6 +29,7 @@ use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use App\Form\TransactionType;
+use App\Form\User1Type;
 use Dompdf\Dompdf;
 use Dompdf\Options;
 
@@ -70,7 +71,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/partenaires", name="ajouPartenaire",methods={"POST"}) 
+     * @Route("/api/partenaires", name="ajoutPartenaire",methods={"POST"}) 
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function ajoutPartenaire(Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator):Response
@@ -99,8 +100,6 @@ class PartenaireController extends AbstractController
             $values=$request->request->all();
             $form->submit($values);
             $files=$request->files->all()['imageName'];
-
-            
             $user->setEmail($email);
             $encode=$passwordEncoder->encodePassword($user, $password);
             $user->setPassword($encode);
@@ -126,6 +125,8 @@ class PartenaireController extends AbstractController
         $values=$request->request->all();
         $form->submit($values);
         $compte->setDateCreation(new \DateTime());
+        $numero=date("Y").date("m").date("H").date("i").date("s").$compte->getId();
+        $compte->setNumeroCompte($numero);
         $compte->setMontantInitial(0);
         $compte->setMontantDeposer(75000);
         $compte->setSolde($compte->getMontantInitial()+$compte->getMontantDeposer());

@@ -1,0 +1,37 @@
+<div class="centrer">
+    <div>
+      <h4>Création de Compte</h4>
+      <hr>
+    </div>
+  <div>
+    <form [formGroup]="compteForm" (ngSubmit)="onSubmitForm()">
+    <div> 
+    <mat-form-field floatLable="auto" appearence="fill">
+      <mat-label>Montant à déposer</mat-label>
+      <input matInput required  class="form-control" formControlName="MontantDeposer">
+    </mat-form-field>
+    </div>
+    <div>
+    <mat-form-field floatLable="auto" appearence="fill">
+      <mat-label>Password</mat-label>
+      //
+      <mat-select class="form-control" formControlName="Partenaire" required>
+          <mat-option>--</mat-option>
+          <mat-option *ngFor="let partenaires of partenaire" [value]={{partenaires.Id}}>
+            {{partenaires.NINEA}}
+          </mat-option>
+        </mat-select>
+      //
+      //<input matInput required  class="form-control" formControlName="password">
+    </mat-form-field>
+    </div>
+      <div class="example-button-row">
+        <button mat-raised-button color="primary" type="submit" [disabled]="userForm.invalid">Register</button>
+      </div>
+    </form>
+  </div>
+  </div>
+  
+  
+  
+  
