@@ -40,7 +40,7 @@ class  Depot
     private $Compte;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Caissier", inversedBy="depots")
+     * @ORM\ManyToOne(targetEntity="App\Entity\User", inversedBy="depots")
      */
     private $Caissier;
 
@@ -100,12 +100,12 @@ class  Depot
         return $this;
     }
 
-    public function getCaissier(): ?Caissier
+    public function getCaissier(): ?User
     {
         return $this->Caissier;
     }
 
-    public function setCaissier(?Caissier $Caissier): self
+    public function setCaissier(?User $Caissier): self
     {
         $this->Caissier = $Caissier;
 

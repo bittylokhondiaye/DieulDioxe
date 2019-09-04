@@ -171,7 +171,7 @@ class PartenaireController extends AbstractController
 
     /**
      * @Route("/api/api/compte" , name="addCompte", methods={"POST"})
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted("ROLE_CAISSIER")
      */
     public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
@@ -180,7 +180,8 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
-        $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
+       // $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
+       $partenaire=$compte->getPartenaire();
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
         $solde=$compte->getMontantInitial()+$compte->getMontantDeposer();
@@ -239,9 +240,13 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
-        $caissier=$entityManager->getRepository(Caissier::class)->find($values["caissier"]);
+        $caissier=$this->getUser();
+        //$caissier=$entityManager->getRepository(Caissier::class)->find($values["caissier"]);
         $depot->setCaissier($caissier);
         $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
+        if(!$compte){
+            throw new Exception('ce compte n existe pas');
+        }
         $depot->setCompte($compte);
         $depot->setDate(new \DateTime());
         $errors = $validator->validate($depot);
@@ -252,10 +257,8 @@ class PartenaireController extends AbstractController
         }
         $entityManager->persist($depot);
         $entityManager->flush();
-
         $montant=$depot->getMontant();
-        $compte=$depot->getCompte();
-        
+        //$compte=$depot->getCompte();
         $compte->getMontantInitial();
         $compte->setMontantInitial($compte->getSolde());
         $compte->setMontantDeposer($montant);
@@ -269,7 +272,6 @@ class PartenaireController extends AbstractController
                 'Content-Type' => 'application/json'
             ]);
         }
-
         $data = [
             'status3' => 201,
             'message3' => 'Le depot a été fait'
@@ -292,7 +294,7 @@ class PartenaireController extends AbstractController
         $code=date("Y").date("m").date("H").date("i").date("s");
         $transaction->setCodeTransaction($code);
     
-        $user = $this->getUser();
+        $user = $this->getUser();         
         $compte=$user->getCompte();
         $compte=$entityManager->getRepository(Compte::class)->find($compte);
         $transaction->setCompte($compte);
@@ -316,11 +318,15 @@ class PartenaireController extends AbstractController
             $transaction->setCommissionPartenaire($partenaire);
             $compte->setSolde(($compte->getSolde()-$transaction->getMontant())+$partenaire);
             $compte->setMontantDeposer($partenaire);
+            $codeRetrait=new Code;
+            $codeRetrait->setSiRetire(true);
+            $codeRetrait->setCodeRetrait($code);
             $entityManager->persist($transaction);
         $entityManager->flush();
         }
         else if($type=="retrait" )
         {
+                
                 $partenaire=($transaction->getFrais()*20)/100;
                 $transaction->setCommissionPartenaire($partenaire);
                 $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
@@ -413,6 +419,21 @@ class PartenaireController extends AbstractController
         header.append("Access-Control-Allow-Origin: *"); */
         $partenaire = $entityManager->getRepository(Partenaire::class)->findAll();
         $data = $serializer->serialize($partenaire, 'json');
+        return new Response($data, 200, [
+            'Content-Type' => 'application/json'
+        ]);
+        
+    }
+
+    /**
+     * @Route("/api/listerCompte" , name="listerPartenaire", methods={"GET"})
+    */
+    
+    public function listerCompte(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
+    {
+        
+        $compte = $entityManager->getRepository(Compte::class)->findAll();
+        $data = $serializer->serialize($compte, 'json');
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
         ]);

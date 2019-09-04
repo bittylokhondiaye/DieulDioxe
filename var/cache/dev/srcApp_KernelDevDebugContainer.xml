@@ -472,6 +472,10 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Repository\CodeRepository" class="App\Repository\CodeRepository" autowire="true" autoconfigure="true">
+      <tag name="doctrine.repository_service"/>
+      <argument type="service" id="doctrine"/>
+    </service>
     <service id="App\Repository\CommissionsRepository" class="App\Repository\CommissionsRepository" autowire="true" autoconfigure="true">
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
@@ -1562,6 +1566,14 @@
       </call>
       <call method="addListener">
         <argument>kernel.request</argument>
+        <argument type="collection">
+          <argument type="service" id="debug.debug_handlers_listener"/>
+          <argument>configure</argument>
+        </argument>
+        <argument>2048</argument>
+      </call>
+      <call method="addListener">
+        <argument>console.command</argument>
         <argument type="collection">
           <argument type="service" id="debug.debug_handlers_listener"/>
           <argument>configure</argument>
@@ -3359,7 +3371,7 @@
       <factory class="Doctrine\ORM\EntityManager" method="create"/>
     </service>
     <service id="doctrine.orm.container_repository_factory" class="Doctrine\Bundle\DoctrineBundle\Repository\ContainerRepositoryFactory" public="false">
-      <argument type="service" id=".service_locator.KitqyH2"/>
+      <argument type="service" id=".service_locator.x9Ti5VV"/>
     </service>
     <service id="doctrine.orm.manager_configurator.abstract" class="Doctrine\Bundle\DoctrineBundle\ManagerConfigurator" abstract="true">
       <argument type="collection"/>
@@ -5064,6 +5076,8 @@
     <service id=".abstract.instanceof.App\Form\UserType" class="App\Form\UserType" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CaissierRepository" class="App\Repository\CaissierRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CaissierRepository" class="App\Repository\CaissierRepository" autowire="true" autoconfigure="true" abstract="true"/>
+    <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CodeRepository" class="App\Repository\CodeRepository" autowire="true" abstract="true"/>
+    <service id=".abstract.instanceof.App\Repository\CodeRepository" class="App\Repository\CodeRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CommissionsRepository" class="App\Repository\CommissionsRepository" autowire="true" abstract="true"/>
     <service id=".abstract.instanceof.App\Repository\CommissionsRepository" class="App\Repository\CommissionsRepository" autowire="true" autoconfigure="true" abstract="true"/>
     <service id=".instanceof.Doctrine\Bundle\DoctrineBundle\Repository\ServiceEntityRepositoryInterface.0.App\Repository\CompteRepository" class="App\Repository\CompteRepository" autowire="true" abstract="true"/>
@@ -5291,7 +5305,7 @@
         <argument key="serializer" type="service" id="serializer"/>
       </argument>
     </service>
-    <service id=".service_locator.NOP6ZpX" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.Sg0ANiV" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\PartenaireController::addCaissier" type="service" id=".service_locator.BLqAp1."/>
@@ -5300,6 +5314,7 @@
         <argument key="App\Controller\PartenaireController::ajoutPartenaire" type="service" id=".service_locator.H3qnu8f"/>
         <argument key="App\Controller\PartenaireController::bloquer" type="service" id=".service_locator.Kudu2tG"/>
         <argument key="App\Controller\PartenaireController::depotCompte" type="service" id=".service_locator.xHj_yg."/>
+        <argument key="App\Controller\PartenaireController::listerCompte" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController::listerPartenaire" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController::makeTransaction" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\SecurityController::register" type="service" id=".service_locator.H3qnu8f"/>
@@ -5309,6 +5324,7 @@
         <argument key="App\Controller\PartenaireController:ajoutPartenaire" type="service" id=".service_locator.H3qnu8f"/>
         <argument key="App\Controller\PartenaireController:bloquer" type="service" id=".service_locator.Kudu2tG"/>
         <argument key="App\Controller\PartenaireController:depotCompte" type="service" id=".service_locator.xHj_yg."/>
+        <argument key="App\Controller\PartenaireController:listerCompte" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController:listerPartenaire" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController:makeTransaction" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\SecurityController:register" type="service" id=".service_locator.H3qnu8f"/>
@@ -5411,10 +5427,11 @@
         <argument key="doctrine.orm.default_listeners.attach_entity_listeners" type="service" id="doctrine.orm.default_listeners.attach_entity_listeners"/>
       </argument>
     </service>
-    <service id=".service_locator.KitqyH2" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.x9Ti5VV" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Repository\CaissierRepository" type="service" id="App\Repository\CaissierRepository"/>
+        <argument key="App\Repository\CodeRepository" type="service" id="App\Repository\CodeRepository"/>
         <argument key="App\Repository\CommissionsRepository" type="service" id="App\Repository\CommissionsRepository"/>
         <argument key="App\Repository\CompteRepository" type="service" id="App\Repository\CompteRepository"/>
         <argument key="App\Repository\DepotRepository" type="service" id="App\Repository\DepotRepository"/>
@@ -5581,12 +5598,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.NOP6ZpX"/>
+      <argument type="service" id=".service_locator.Sg0ANiV"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.NOP6ZpX"/>
+      <argument type="service" id=".service_locator.Sg0ANiV"/>
     </service>
     <service id="api_platform.swagger.normalizer.api_gateway.inner" class="ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer" public="false">
       <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
@@ -5965,7 +5982,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.NOP6ZpX"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.Sg0ANiV"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>

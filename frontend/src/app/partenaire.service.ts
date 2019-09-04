@@ -2,6 +2,8 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { IPartenaire } from './partenaire';
 import { Observable } from 'rxjs';
+import { Compte } from './Compte.model';
+import { Compte2 } from './listerCompte.model';
 
 @Injectable({
   providedIn: 'root'
@@ -21,6 +23,9 @@ export class PartenaireService {
  private url:string = "http://localhost:8000/api/listerPartenaire";
  private urlajout:string = "http://localhost:8000/api/partenaires";
  private urlcompte:string = "http://localhost:8000/api/api/compte";
+ private compteurl:string = "http://localhost:8000/api/listerCompte";
+ private depoturl:string = "http://localhost:8000/api/depot";
+
 
   injector: any;
   req:any;
@@ -44,5 +49,20 @@ export class PartenaireService {
     return this.http.post(this.urlcompte,donnees,{headers},).subscribe(res => {
       console.log(res)
     });
+  }
+
+  getCompte(): Observable<Compte2[]>{
+    return  this.http.get<Compte2[]>(this.compteurl);
+  }
+
+  postDepot(donnees) {
+    let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
+    const data={
+      Compte:donnees.Compte,
+      Montant: donnees.Montant
+    }
+    return this.http.post(this.depoturl,data,{headers},).subscribe(res => {
+      console.log(res)
+    });                                                                                                                                                                                                                                                                                                                                                             
   }
 }

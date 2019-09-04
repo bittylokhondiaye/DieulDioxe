@@ -5,13 +5,16 @@ import { PartenaireComponent } from './partenaire/partenaire.component';
 import { AjoutPartenaireComponent } from './ajout-partenaire/ajout-partenaire.component';
 import { AjoutUserComponent } from './ajout-user/ajout-user.component';
 import { AjoutCompteComponent } from './ajout-compte/ajout-compte.component';
+import { DepotCompteComponent } from './depot-compte/depot-compte.component';
 
 const routes: Routes = [
   { path:"login" , component:LoginComponent},
   { path:"listerPartenaire" , component:PartenaireComponent},
   { path:"ajoutPartenaire" , component:AjoutPartenaireComponent},
   { path:"ajoutUser" , component:AjoutUserComponent},
-  { path:"ajoutCompte" , component:AjoutCompteComponent}
+  { path:"ajoutCompte" , component:AjoutCompteComponent},
+  { path:"depot" , component:DepotCompteComponent}
+  
 ];
 
 @NgModule({

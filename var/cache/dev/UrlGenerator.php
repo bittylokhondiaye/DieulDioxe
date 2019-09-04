@@ -12,7 +12,7 @@ return [
     'depotCompte' => [[], ['_controller' => 'App\\Controller\\PartenaireController::depotCompte'], [], [['text', '/api/depot']], [], []],
     'makeTransaction' => [[], ['_controller' => 'App\\Controller\\PartenaireController::makeTransaction'], [], [['text', '/api/makeTransaction']], [], []],
     'bloquer' => [['id'], ['_controller' => 'App\\Controller\\PartenaireController::bloquer'], [], [['variable', '/', '[^/]++', 'id', true], ['text', '/api/bloquer']], [], []],
-    'listerPartenaire' => [[], ['_controller' => 'App\\Controller\\PartenaireController::listerPartenaire'], [], [['text', '/api/listerPartenaire/']], [], []],
+    'listerPartenaire' => [[], ['_controller' => 'App\\Controller\\PartenaireController::listerCompte'], [], [['text', '/api/listerCompte']], [], []],
     'register' => [[], ['_controller' => 'App\\Controller\\SecurityController::register'], [], [['text', '/api/register']], [], []],
     'login' => [[], ['_controller' => 'App\\Controller\\SecurityController::login'], [], [['text', '/api/login']], [], []],
     'api_entrypoint' => [['index', '_format'], ['_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index' => 'index'], [['variable', '.', '[^/]++', '_format', true], ['variable', '/', 'index', 'index', true], ['text', '/api']], [], []],

@@ -19,7 +19,7 @@ class DepotType extends AbstractType
         $builder
             ->add('Montant' , TextType::class)
             ->add('Compte', EntityType::class,['class'=>Compte::class])
-            ->add('Caissier', EntityType::class,['class'=>Caissier::class])
+            //->add('Caissier', EntityType::class,['class'=>Caissier::class])
         ;
     }
 
