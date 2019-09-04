@@ -4,6 +4,7 @@ namespace App\Controller;
 
 use Dompdf\Dompdf;
 use Dompdf\Options;
+use App\Entity\Code;
 use App\Entity\User;
 use App\Entity\Depot;
 use App\Entity\Compte;
@@ -29,6 +30,7 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\Serializer\SerializerInterface;
 use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Config\Definition\Exception\Exception;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
@@ -171,12 +173,7 @@ class PartenaireController extends AbstractController
 
 
 
-        /* $userPartenaire = $serializer->deserialize($request->getContent(), UserPartenaire::class, 'json');
-        $errors = $validator->validate($userPartenaire);
-            if(count($errors)) {
-                $errors = $serializer->serialize($errors, 'json');
-                return new Response($errors, 500);
-            } */
+       
             $email=$userPartenaire->getEmail();
             $password=$userPartenaire->getPassword();
             $compte=$userPartenaire->getCompte();
@@ -224,7 +221,7 @@ class PartenaireController extends AbstractController
         $form->handleRequest($request); 
         $values=$request->request->all();
         $form->submit($values);
-       // $partenaire=$entityManager->getRepository(Partenaire::class)->find($values["partenaire"]);
+       
        $partenaire=$compte->getPartenaire();
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
@@ -285,7 +282,7 @@ class PartenaireController extends AbstractController
         $values=$request->request->all();
         $form->submit($values);
         $caissier=$this->getUser();
-        //$caissier=$entityManager->getRepository(Caissier::class)->find($values["caissier"]);
+        
         $depot->setCaissier($caissier);
         $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
         if(!$compte){
@@ -302,7 +299,7 @@ class PartenaireController extends AbstractController
         $entityManager->persist($depot);
         $entityManager->flush();
         $montant=$depot->getMontant();
-        //$compte=$depot->getCompte();
+        
         $compte->getMontantInitial();
         $compte->setMontantInitial($compte->getSolde());
         $compte->setMontantDeposer($montant);
@@ -335,8 +332,6 @@ class PartenaireController extends AbstractController
         $values=$request->request->all();
         $form->submit($values);
         $transaction->setDateTransaction(new \DateTime());
-        
-    
         $user = $this->getUser();         
         $compte=$user->getCompte();
         $compte=$entityManager->getRepository(Compte::class)->find($compte);
@@ -357,6 +352,7 @@ class PartenaireController extends AbstractController
         $transaction->setCommissionSystem($system);
         $type=$transaction->getType();
         if($type=="envoi" && $compte->getSolde()>=$montant){
+            
             $code=date("Y").date("m").date("H").date("i").date("s");
             $transaction->setCodeTransaction($code);
             $partenaire=($transaction->getFrais()*10)/100;
@@ -373,17 +369,21 @@ class PartenaireController extends AbstractController
         }
         else if($type=="retrait" )
         {
-            $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy(array('CodeRetrait'=>$transaction->getCodeTransaction()));
+            $code=$transaction->getCodeTransaction()
+            $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy($code);
             if($codeRetrait && ($codeRetrait->getSiRerire())=="false"){
                 $partenaire=($transaction->getFrais()*20)/100;
                 $transaction->setCommissionPartenaire($partenaire);
                 $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
                 $compte->setMontantDeposer($transaction->getMontant()+$partenaire);
+                $transaction->setDateTransaction(new \DateTime());
                 $entityManager->persist($codeRetrait);
                 $entityManager->flush();
                 $entityManager->persist($transaction);
                 $entityManager->flush();
             }
+            else if(!$codeRetrait){ throw new Exception('Le code est invalide');}
+            else if($codeRetrait && ($codeRetrait->getSiRerire())=="true"){throw new Exception('le retrait a déja été fait');}
                 
         }
         $entityManager->persist($compte);
@@ -467,8 +467,7 @@ class PartenaireController extends AbstractController
     
     public function listerPartenaire(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
     {
-        /* header("Access-Control-Allow-Origin: *");
-        header.append("Access-Control-Allow-Origin: *"); */
+        
         $partenaire = $entityManager->getRepository(Partenaire::class)->findAll();
         $data = $serializer->serialize($partenaire, 'json');
         return new Response($data, 200, [

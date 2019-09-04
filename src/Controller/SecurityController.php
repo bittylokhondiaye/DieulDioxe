@@ -41,13 +41,10 @@ class SecurityController extends AbstractController
             if($files=$request->files->all()){
                 $user->setImageFile($files['imageName']);
             }
-            //$files=$request->files->all()['imageName'];
-
-            //$compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
-            //$user->setCompte($compte);
+            
             $user->setEmail($values["email"]);
             $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
-            //$user->setImageFile($files);
+            
             $user->setUpdatedAt(new \DateTime());
             $utilisateur=$this->getUser();
             $auth=$utilisateur->getRoles();

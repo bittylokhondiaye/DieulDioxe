@@ -64,10 +64,10 @@ class Compte extends \App\Entity\Compte implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'NumeroCompte', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'DateCreation', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantInitial', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantDeposer', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Solde', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Partenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'transactions'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'NumeroCompte', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'DateCreation', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantInitial', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantDeposer', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Solde', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Partenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'transactions', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'users'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'NumeroCompte', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'DateCreation', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantInitial', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantDeposer', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Solde', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Partenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'transactions'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'NumeroCompte', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'DateCreation', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantInitial', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'MontantDeposer', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Solde', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'Partenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'depots', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'transactions', '' . "\0" . 'App\\Entity\\Compte' . "\0" . 'users'];
     }
 
     /**
@@ -417,6 +417,39 @@ class Compte extends \App\Entity\Compte implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeTransaction', [$transaction]);
 
         return parent::removeTransaction($transaction);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUsers(): \Doctrine\Common\Collections\Collection
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsers', []);
+
+        return parent::getUsers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addUser(\App\Entity\User $user): \App\Entity\Compte
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addUser', [$user]);
+
+        return parent::addUser($user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeUser(\App\Entity\User $user): \App\Entity\Compte
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUser', [$user]);
+
+        return parent::removeUser($user);
     }
 
 }
