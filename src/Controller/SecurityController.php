@@ -28,7 +28,7 @@ class SecurityController extends AbstractController
 {
     /**
      * @Route("/register", name="register", methods={"POST"})
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @IsGranted({"ROLE_ADMIN", "ROLE_SUPER_ADMIN"})
      */
     public function register(Request $request, UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)
     {
@@ -49,6 +49,11 @@ class SecurityController extends AbstractController
             $user->setPassword($passwordEncoder->encodePassword($user, $values["password"]));
             //$user->setImageFile($files);
             $user->setUpdatedAt(new \DateTime());
+            $utilisateur=$this->getUser();
+            $auth=$utilisateur->getRoles();
+            if($auth==["ROLE_ADMIN"]){
+                $user->setProfile("user");
+            }
             $user->setProfile($values["Profile"]);
             $user->setStatut("BLOQUER");
             $Profile=$values["Profile"];

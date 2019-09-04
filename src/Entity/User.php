@@ -84,10 +84,10 @@ class User implements UserInterface
     private $updatedAt;
 
     /**
-     * @ORM\ManyToOne(targetEntity="App\Entity\Compte")
-     * @ORM\Column(nullable=true)
+     * @ORM\ManyToOne(targetEntity="App\Entity\Compte", inversedBy="users")
      */
     private $Compte;
+
 
     
     public function getId(): ?int
@@ -260,4 +260,6 @@ class User implements UserInterface
 
         return $this;
     }
+
+    
 }

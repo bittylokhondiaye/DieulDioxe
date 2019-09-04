@@ -2,20 +2,26 @@
 
 namespace App\Controller;
 
+use Dompdf\Dompdf;
+use Dompdf\Options;
 use App\Entity\User;
 use App\Entity\Depot;
-use App\Form\DepotType;
 use App\Entity\Compte;
 use App\Form\UserType;
-use App\Form\CaissierType;
+use App\Form\DepotType;
+use App\Form\User1Type;
 use App\Entity\Caissier;
 use App\Form\CompteType;
 use App\Entity\Partenaire;
+use App\Form\CaissierType;
 use App\Entity\Transaction;
 use App\Form\PartenaireType;
+use App\Form\TransactionType;
 use App\Entity\UserPartenaire;
+use App\Form\UserPartenaireType;
 use App\Repository\PartenaireRepository;
 use Doctrine\ORM\EntityManagerInterface;
+use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
@@ -25,13 +31,8 @@ use Symfony\Component\Validator\Constraints\DateTime;
 use Symfony\Component\Security\Core\User\UserInterface;
 use Symfony\Component\Validator\Validator\ValidatorInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\IsGranted;
-use Symfony\Component\Form\FormTypeInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
-use App\Form\TransactionType;
-use App\Form\User1Type;
-use Dompdf\Dompdf;
-use Dompdf\Options;
 
 
 
@@ -152,14 +153,57 @@ class PartenaireController extends AbstractController
      * @Route("/api/userPartenaires", name="addUserPartenaire", methods={"POST"})
      * @IsGranted("ROLE_ADMIN")
      */
-    public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
+    public function addUserPartenaire(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator,UserPasswordEncoderInterface $passwordEncoder)
     {
-        $userPartenaire = $serializer->deserialize($request->getContent(), UserPartenaire::class, 'json');
+        $userPartenaire= new UserPartenaire();
+        $form=$this->createForm(UserPartenaireType::class, $userPartenaire);
+        $values=$request->request->all();
+       
+        $form->submit($values);
+        $entityManager= $this->getDoctrine()->getManager();
+        $errors = $validator->validate($userPartenaire);
+            if(count($errors)) {
+                
+                return new Response($errors, 500 );
+            }
+        $entityManager->persist($userPartenaire);
+        $entityManager->flush();
+
+
+
+        /* $userPartenaire = $serializer->deserialize($request->getContent(), UserPartenaire::class, 'json');
         $errors = $validator->validate($userPartenaire);
             if(count($errors)) {
                 $errors = $serializer->serialize($errors, 'json');
                 return new Response($errors, 500);
+            } */
+            $email=$userPartenaire->getEmail();
+            $password=$userPartenaire->getPassword();
+            $compte=$userPartenaire->getCompte();
+            $user=new User;
+            $form=$this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            $values=$request->request->all();
+            $form->submit($values);
+            $files=$request->files->all()['imageName'];
+            $encode=$passwordEncoder->encodePassword($user, $password);
+            $user->setEmail($email);
+            $user->setPassword($encode);
+            $user->setImageFile($files);
+            $user->setCompte($compte);
+            $user->setProfile("user");
+            $user->setStatut("BLOQUER");
+            $roles=["ROLE_USER"];
+        
+            $user->setRoles($roles);
+            
+            $errors = $validator->validate($user);
+            if(count($errors)) {
+                
+                return new Response($errors, 500 );
             }
+            $entityManager->persist($user);
+            $entityManager->flush();
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
         $data = [
@@ -171,7 +215,7 @@ class PartenaireController extends AbstractController
 
     /**
      * @Route("/api/api/compte" , name="addCompte", methods={"POST"})
-     * @IsGranted("ROLE_CAISSIER")
+     * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function addCompte(Request $request, SerializerInterface $serializer,EntityManagerInterface $entityManager,ValidatorInterface $validator)
     {
@@ -291,8 +335,7 @@ class PartenaireController extends AbstractController
         $values=$request->request->all();
         $form->submit($values);
         $transaction->setDateTransaction(new \DateTime());
-        $code=date("Y").date("m").date("H").date("i").date("s");
-        $transaction->setCodeTransaction($code);
+        
     
         $user = $this->getUser();         
         $compte=$user->getCompte();
@@ -314,25 +357,34 @@ class PartenaireController extends AbstractController
         $transaction->setCommissionSystem($system);
         $type=$transaction->getType();
         if($type=="envoi" && $compte->getSolde()>=$montant){
+            $code=date("Y").date("m").date("H").date("i").date("s");
+            $transaction->setCodeTransaction($code);
             $partenaire=($transaction->getFrais()*10)/100;
             $transaction->setCommissionPartenaire($partenaire);
             $compte->setSolde(($compte->getSolde()-$transaction->getMontant())+$partenaire);
             $compte->setMontantDeposer($partenaire);
             $codeRetrait=new Code;
-            $codeRetrait->setSiRetire(true);
+            $codeRetrait->setSiRetire(false);
             $codeRetrait->setCodeRetrait($code);
+            $entityManager->persist($codeRetrait);
+            $entityManager->flush();
             $entityManager->persist($transaction);
         $entityManager->flush();
         }
         else if($type=="retrait" )
         {
-                
+            $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy(array('CodeRetrait'=>$transaction->getCodeTransaction()));
+            if($codeRetrait && ($codeRetrait->getSiRerire())=="false"){
                 $partenaire=($transaction->getFrais()*20)/100;
                 $transaction->setCommissionPartenaire($partenaire);
                 $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
                 $compte->setMontantDeposer($transaction->getMontant()+$partenaire);
+                $entityManager->persist($codeRetrait);
+                $entityManager->flush();
                 $entityManager->persist($transaction);
-        $entityManager->flush();
+                $entityManager->flush();
+            }
+                
         }
         $entityManager->persist($compte);
         $entityManager->flush();
