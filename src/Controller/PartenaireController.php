@@ -369,21 +369,31 @@ class PartenaireController extends AbstractController
         }
         else if($type=="retrait" )
         {
-            $code=$transaction->getCodeTransaction()
-            $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy($code);
-            if($codeRetrait && ($codeRetrait->getSiRerire())=="false"){
-                $partenaire=($transaction->getFrais()*20)/100;
-                $transaction->setCommissionPartenaire($partenaire);
-                $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
-                $compte->setMontantDeposer($transaction->getMontant()+$partenaire);
-                $transaction->setDateTransaction(new \DateTime());
-                $entityManager->persist($codeRetrait);
-                $entityManager->flush();
-                $entityManager->persist($transaction);
-                $entityManager->flush();
+            
+            $code=$values['CodeTransaction'];
+            
+            $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy(array('CodeRetrait' => $code));
+            
+            if($codeRetrait==null){ throw new Exception('Le code est invalide');}
+            else{
+                if(($codeRetrait->getSiRetire())==true){throw new Exception('le retrait a déja été fait avec ce code');}
+                else if($codeRetrait && ($codeRetrait->getSiRetire())==false){
+                    
+                    $transaction->setCodeTransaction($values['CodeTransaction']);
+                    $partenaire=($transaction->getFrais()*20)/100;
+                    $transaction->setCommissionPartenaire($partenaire);
+                    $compte->setSolde(($compte->getSolde()+$transaction->getMontant())+$partenaire);
+                    $compte->setMontantDeposer($transaction->getMontant()+$partenaire);
+                    $transaction->setDateTransaction(new \DateTime());
+                    $codeRetrait->setSiRetire("true");
+                    $entityManager->persist($codeRetrait);
+                    $entityManager->flush();
+                    $entityManager->persist($transaction);
+                    $entityManager->flush();
+                }
             }
-            else if(!$codeRetrait){ throw new Exception('Le code est invalide');}
-            else if($codeRetrait && ($codeRetrait->getSiRerire())=="true"){throw new Exception('le retrait a déja été fait');}
+            
+             
                 
         }
         $entityManager->persist($compte);
