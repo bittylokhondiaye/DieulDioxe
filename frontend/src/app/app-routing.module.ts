@@ -6,6 +6,7 @@ import { AjoutPartenaireComponent } from './ajout-partenaire/ajout-partenaire.co
 import { AjoutUserComponent } from './ajout-user/ajout-user.component';
 import { AjoutCompteComponent } from './ajout-compte/ajout-compte.component';
 import { DepotCompteComponent } from './depot-compte/depot-compte.component';
+import { TransactionComponent } from './transaction/transaction.component';
 
 const routes: Routes = [
   { path:"login" , component:LoginComponent},
@@ -13,7 +14,8 @@ const routes: Routes = [
   { path:"ajoutPartenaire" , component:AjoutPartenaireComponent},
   { path:"ajoutUser" , component:AjoutUserComponent},
   { path:"ajoutCompte" , component:AjoutCompteComponent},
-  { path:"depot" , component:DepotCompteComponent}
+  { path:"depot" , component:DepotCompteComponent},
+  { path:"transaction" , component:TransactionComponent}
   
 ];
 

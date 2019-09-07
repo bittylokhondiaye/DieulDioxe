@@ -1,0 +1,80 @@
+<div class="centrer">
+  <div>
+    <h4>Dépot d'argent</h4>
+    <hr>
+  </div>
+<div>
+  <form [formGroup]="transactionForm" (ngSubmit)="onSubmitForm()">
+
+      <div>
+          <mat-form-field floatLable="auto" appearence="fill">
+            <mat-label>Type de transaction</mat-label>
+            <mat-select class="form-control" formControlName="Type"  required>
+                <mat-option>--</mat-option>
+                <mat-option  value="envoi" (click)="envoi()">Envoi</mat-option>
+                <mat-option  value="retrait" (click)="retrait()">Retrait</mat-option>
+              </mat-select>
+          </mat-form-field>
+          </div>
+
+  <div  id="r1"> 
+  <mat-form-field floatLable="auto" appearence="fill" >
+    <mat-label>Code Transaction</mat-label>
+    <input matInput   class="form-control" formControlName="CodeTransaction" >
+  </mat-form-field>
+  </div>
+
+  <div> 
+    <mat-form-field floatLable="auto" appearence="fill">
+      <mat-label>Montant de l'argent</mat-label>
+      <input matInput   class="form-control" formControlName="Montant">
+    </mat-form-field>
+  </div>
+  <div id="e1"> 
+    <mat-form-field floatLable="auto" appearence="fill"  >
+      <mat-label>Numero EXpediteur</mat-label>
+      <input matInput   class="form-control" formControlName="NumeroExpediteur">
+    </mat-form-field>
+  </div>
+
+  <div> 
+    <mat-form-field floatLable="auto" appearence="fill">
+      <mat-label>Numero Destinataire</mat-label>
+      <input matInput   class="form-control" formControlName="NumeroDestinataire">
+    </mat-form-field>
+  </div>
+
+  <div id="r2"> 
+    <mat-form-field floatLable="auto" appearence="fill"   >
+      <mat-label>CNI destinataire</mat-label>
+      <input matInput   class="form-control" formControlName="CNIdestinataire">
+    </mat-form-field>
+  </div>
+
+  <div id="e2"> 
+    <mat-form-field floatLable="auto" appearence="fill"   >
+      <mat-label>Nom Complet Expéditeur</mat-label>
+      <input matInput   class="form-control" formControlName="NomCompletExpediteur">
+    </mat-form-field>
+  </div>
+
+  <div id="e3"> 
+    <mat-form-field floatLable="auto" appearence="fill" >
+      <mat-label>Nom Complet Destinataire</mat-label>
+      <input matInput   class="form-control" formControlName="NomCompletDestinataire">
+    </mat-form-field>
+  </div>
+  
+
+    <div class="example-button-row">
+      <button mat-raised-button color="primary" type="submit" [disabled]="transactionForm.invalid" >Valider</button>
+    </div>
+
+  </form>
+</div>
+</div>
+
+
+
+
+

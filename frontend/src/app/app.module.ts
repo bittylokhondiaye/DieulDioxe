@@ -22,6 +22,9 @@ import { AjoutUserComponent } from './ajout-user/ajout-user.component';
 import {MatSelectModule} from '@angular/material/select';
 import { AjoutCompteComponent } from './ajout-compte/ajout-compte.component';
 import { DepotCompteComponent } from './depot-compte/depot-compte.component';
+import { TransactionComponent } from './transaction/transaction.component';
+import { CommonModule } from '@angular/common';  
+
 
 
 @NgModule({
@@ -33,7 +36,8 @@ import { DepotCompteComponent } from './depot-compte/depot-compte.component';
     AjoutPartenaireComponent,
     AjoutUserComponent,
     AjoutCompteComponent,
-    DepotCompteComponent
+    DepotCompteComponent,
+    TransactionComponent
   ],
   imports: [
     BrowserModule,
@@ -52,7 +56,8 @@ import { DepotCompteComponent } from './depot-compte/depot-compte.component';
     MatInputModule,
     MatFormFieldModule,
     MatOptionModule,
-    MatSelectModule
+    MatSelectModule,
+    CommonModule
   ],
   providers: [AuthenticationService,PartenaireService/* ,{
     provide:HTTP_INTERCEPTORS,

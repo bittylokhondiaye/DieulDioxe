@@ -16,7 +16,7 @@ class TransactionType extends AbstractType
     {
         $builder
             ->add('Type', TextType::class)
-            ->add('DateTransaction', DateTimeType::class)
+            //->add('DateTransaction', DateTimeType::class)
             ->add('Montant', NumberType::class)
             ->add('NumeroExpediteur', NumberType::class)
             /* ->add('CNIexpediteur', NumberType::class) */

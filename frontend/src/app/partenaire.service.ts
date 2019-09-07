@@ -25,6 +25,7 @@ export class PartenaireService {
  private urlcompte:string = "http://localhost:8000/api/api/compte";
  private compteurl:string = "http://localhost:8000/api/listerCompte";
  private depoturl:string = "http://localhost:8000/api/depot";
+ private transactionurl:string = "http://localhost:8000/api/makeTransaction";
 
 
   injector: any;
@@ -64,5 +65,12 @@ export class PartenaireService {
     return this.http.post(this.depoturl,data,{headers},).subscribe(res => {
       console.log(res)
     });                                                                                                                                                                                                                                                                                                                                                             
+  }
+
+  postTransaction(donnees) {
+    let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
+    return this.http.post(this.transactionurl,donnees,{headers},).subscribe(res => {
+      console.log(res)
+    });
   }
 }

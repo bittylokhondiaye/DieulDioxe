@@ -352,7 +352,7 @@ class PartenaireController extends AbstractController
         $transaction->setCommissionSystem($system);
         $type=$transaction->getType();
         if($type=="envoi" && $compte->getSolde()>=$montant){
-            
+            $transaction->setDateTransaction(new \DateTime());
             $code=date("Y").date("m").date("H").date("i").date("s");
             $transaction->setCodeTransaction($code);
             $partenaire=($transaction->getFrais()*10)/100;
@@ -378,7 +378,7 @@ class PartenaireController extends AbstractController
             else{
                 if(($codeRetrait->getSiRetire())==true){throw new Exception('le retrait a déja été fait avec ce code');}
                 else if($codeRetrait && ($codeRetrait->getSiRetire())==false){
-                    
+                    $transaction->setDateTransaction(new \DateTime());
                     $transaction->setCodeTransaction($values['CodeTransaction']);
                     $partenaire=($transaction->getFrais()*20)/100;
                     $transaction->setCommissionPartenaire($partenaire);
@@ -472,7 +472,8 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/listerPartenaire/" , name="listerPartenaire", methods={"GET"})
+     * @Route("/api/listerPartenaire" , name="listerPartenaire", methods={"GET"})
+     * @IsGranted("ROLE_SUPER_ADMIN")
     */
     
     public function listerPartenaire(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
