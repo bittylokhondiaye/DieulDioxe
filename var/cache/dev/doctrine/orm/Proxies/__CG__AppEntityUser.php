@@ -64,10 +64,10 @@ class User extends \App\Entity\User implements \Doctrine\ORM\Proxy\Proxy
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\User' . "\0" . 'id', '' . "\0" . 'App\\Entity\\User' . "\0" . 'email', '' . "\0" . 'App\\Entity\\User' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\User' . "\0" . 'password', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Profile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Statut', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageName', '' . "\0" . 'App\\Entity\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Compte'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\User' . "\0" . 'id', '' . "\0" . 'App\\Entity\\User' . "\0" . 'email', '' . "\0" . 'App\\Entity\\User' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\User' . "\0" . 'password', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Profile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Statut', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageName', '' . "\0" . 'App\\Entity\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Compte', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Partenaire'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\User' . "\0" . 'id', '' . "\0" . 'App\\Entity\\User' . "\0" . 'email', '' . "\0" . 'App\\Entity\\User' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\User' . "\0" . 'password', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Profile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Statut', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageName', '' . "\0" . 'App\\Entity\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Compte'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\User' . "\0" . 'id', '' . "\0" . 'App\\Entity\\User' . "\0" . 'email', '' . "\0" . 'App\\Entity\\User' . "\0" . 'roles', '' . "\0" . 'App\\Entity\\User' . "\0" . 'password', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Profile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Statut', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageFile', '' . "\0" . 'App\\Entity\\User' . "\0" . 'imageName', '' . "\0" . 'App\\Entity\\User' . "\0" . 'updatedAt', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Compte', '' . "\0" . 'App\\Entity\\User' . "\0" . 'Partenaire'];
     }
 
     /**
@@ -417,6 +417,28 @@ class User extends \App\Entity\User implements \Doctrine\ORM\Proxy\Proxy
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setCompte', [$Compte]);
 
         return parent::setCompte($Compte);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getPartenaire(): ?\App\Entity\Partenaire
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getPartenaire', []);
+
+        return parent::getPartenaire();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function setPartenaire(?\App\Entity\Partenaire $Partenaire): \App\Entity\User
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'setPartenaire', [$Partenaire]);
+
+        return parent::setPartenaire($Partenaire);
     }
 
 }

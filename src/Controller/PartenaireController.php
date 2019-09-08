@@ -160,8 +160,10 @@ class PartenaireController extends AbstractController
         $userPartenaire= new UserPartenaire();
         $form=$this->createForm(UserPartenaireType::class, $userPartenaire);
         $values=$request->request->all();
-       
         $form->submit($values);
+        $utilisateur=$this->getUser();
+        $partenaire=$utilisateur->getPartenaire();
+        $userPartenaire->setPartenaire($partenaire);
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($userPartenaire);
             if(count($errors)) {
@@ -170,10 +172,6 @@ class PartenaireController extends AbstractController
             }
         $entityManager->persist($userPartenaire);
         $entityManager->flush();
-
-
-
-       
             $email=$userPartenaire->getEmail();
             $password=$userPartenaire->getPassword();
             $compte=$userPartenaire->getCompte();
@@ -187,6 +185,7 @@ class PartenaireController extends AbstractController
             $user->setEmail($email);
             $user->setPassword($encode);
             $user->setImageFile($files);
+            $user->setPartenaire($partenaire);
             $user->setCompte($compte);
             $user->setProfile("user");
             $user->setStatut("BLOQUER");
@@ -472,8 +471,8 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/listerPartenaire" , name="listerPartenaire", methods={"GET"})
-     * @IsGranted("ROLE_SUPER_ADMIN")
+     * @Route("/api/listerPartenaire/" , name="listerPartenaire", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN",  "ROLE_SUPER_ADMIN"})
     */
     
     public function listerPartenaire(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
@@ -488,7 +487,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/listerCompte" , name="listerPartenaire", methods={"GET"})
+     * @Route("/api/listerCompte" , name="listerCompte", methods={"GET"})
     */
     
     public function listerCompte(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
@@ -501,4 +500,35 @@ class PartenaireController extends AbstractController
         ]);
         
     }
+
+
+
+
+
+    /**
+     * @Route("/api/user" , name="listerUser", methods={"GET"})
+     * @IsGranted({"ROLE_ADMIN",  "ROLE_SUPER_ADMIN"})
+    */
+    
+    public function listerUser(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
+    {   
+        $user=$this->getUser();
+        if ($user->getRoles()[0]=='ROLE_SUPER_ADMIN') {
+            $liste = $entityManager->getRepository(User::class)->findBy(array('Profile' => 'admin'));
+            $data = $serializer->serialize($liste, 'json');
+            return new Response($data, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+        }  
+        
+         if ($user->getRoles()[0]=='ROLE_ADMIN') {
+            $liste = $entityManager->getRepository(User::class)->findBy(array('Profile'=>'user'));
+            $data = $serializer->serialize($liste, 'json');
+            return new Response($data, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+        } 
+
+    }
+    
 }

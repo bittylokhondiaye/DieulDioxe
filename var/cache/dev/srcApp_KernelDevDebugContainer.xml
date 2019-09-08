@@ -511,6 +511,7 @@
       <tag name="doctrine.repository_service"/>
       <argument type="service" id="doctrine"/>
     </service>
+    <service id="App\Utils\CircularReferenceHandler" class="App\Utils\CircularReferenceHandler" autowire="true" autoconfigure="true"/>
     <service id="controller_name_converter" class="Symfony\Bundle\FrameworkBundle\Controller\ControllerNameParser" public="false">
       <tag name="monolog.logger" channel="request"/>
       <argument type="service" id="kernel"/>
@@ -2012,7 +2013,9 @@
       <argument type="service" id="property_info" on-invalid="ignore"/>
       <argument type="service" id="serializer.mapping.class_discriminator_resolver" on-invalid="ignore"/>
       <argument>null</argument>
-      <argument type="collection"/>
+      <argument type="collection">
+        <argument key="circular_reference_handler" type="service" id="App\Utils\CircularReferenceHandler"/>
+      </argument>
     </service>
     <service id="serializer.denormalizer.array" class="Symfony\Component\Serializer\Normalizer\ArrayDenormalizer" public="false">
       <tag name="serializer.normalizer" priority="-990"/>
@@ -5303,7 +5306,7 @@
         <argument key="serializer" type="service" id="serializer"/>
       </argument>
     </service>
-    <service id=".service_locator.PrA_Ar6" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
+    <service id=".service_locator.9pSkynP" class="Symfony\Component\DependencyInjection\ServiceLocator" public="false">
       <tag name="container.service_locator"/>
       <argument type="collection">
         <argument key="App\Controller\PartenaireController::addCaissier" type="service" id=".service_locator.BLqAp1."/>
@@ -5314,6 +5317,7 @@
         <argument key="App\Controller\PartenaireController::depotCompte" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\PartenaireController::listerCompte" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController::listerPartenaire" type="service" id=".service_locator.k22NER8"/>
+        <argument key="App\Controller\PartenaireController::listerUser" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController::makeTransaction" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\SecurityController::register" type="service" id=".service_locator.H3qnu8f"/>
         <argument key="App\Controller\PartenaireController:addCaissier" type="service" id=".service_locator.BLqAp1."/>
@@ -5324,6 +5328,7 @@
         <argument key="App\Controller\PartenaireController:depotCompte" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\PartenaireController:listerCompte" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController:listerPartenaire" type="service" id=".service_locator.k22NER8"/>
+        <argument key="App\Controller\PartenaireController:listerUser" type="service" id=".service_locator.k22NER8"/>
         <argument key="App\Controller\PartenaireController:makeTransaction" type="service" id=".service_locator.xHj_yg."/>
         <argument key="App\Controller\SecurityController:register" type="service" id=".service_locator.H3qnu8f"/>
       </argument>
@@ -5597,12 +5602,12 @@
       <argument type="service" id="security.token_storage"/>
     </service>
     <service id="debug.argument_resolver.service.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\ServiceValueResolver" public="false">
-      <argument type="service" id=".service_locator.PrA_Ar6"/>
+      <argument type="service" id=".service_locator.9pSkynP"/>
     </service>
     <service id="debug.argument_resolver.default.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\DefaultValueResolver" public="false"/>
     <service id="debug.argument_resolver.variadic.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\VariadicValueResolver" public="false"/>
     <service id="debug.argument_resolver.not_tagged_controller.inner" class="Symfony\Component\HttpKernel\Controller\ArgumentResolver\NotTaggedControllerValueResolver" public="false">
-      <argument type="service" id=".service_locator.PrA_Ar6"/>
+      <argument type="service" id=".service_locator.9pSkynP"/>
     </service>
     <service id="api_platform.swagger.normalizer.api_gateway.inner" class="ApiPlatform\Core\Swagger\Serializer\DocumentationNormalizer" public="false">
       <argument type="service" id="api_platform.metadata.resource.metadata_factory.cached"/>
@@ -5981,7 +5986,7 @@
     <service id="Vich\UploaderBundle\Form\Type\VichImageType" alias="vich_uploader.form.type.image" public="false"/>
     <service id="Vich\UploaderBundle\Templating\Helper\UploaderHelper" alias="vich_uploader.templating.helper.uploader_helper" public="false"/>
     <service id="Vich\UploaderBundle\Twig\Extension\UploaderExtension" alias="vich_uploader.twig.extension.uploader" public="false"/>
-    <service id="argument_resolver.controller_locator" alias=".service_locator.PrA_Ar6"/>
+    <service id="argument_resolver.controller_locator" alias=".service_locator.9pSkynP"/>
     <service id="twig.loader.filesystem" alias="twig.loader.native_filesystem" public="false"/>
     <service id="twig.loader" alias="twig.loader.native_filesystem"/>
     <service id="api_platform.name_converter" alias="serializer.name_converter.metadata_aware"/>

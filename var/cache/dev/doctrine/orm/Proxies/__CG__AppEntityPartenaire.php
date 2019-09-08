@@ -64,10 +64,10 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
     public function __sleep()
     {
         if ($this->__isInitialized__) {
-            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Prenom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Nom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'CNI', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'NINEA', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'RaisonSocial', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'superAdmin', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Email'];
+            return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Prenom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Nom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'CNI', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'NINEA', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'RaisonSocial', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'superAdmin', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Email', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'users'];
         }
 
-        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Prenom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Nom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'CNI', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'NINEA', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'RaisonSocial', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'superAdmin', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Email'];
+        return ['__isInitialized__', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'id', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Prenom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Nom', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'password', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Telephone', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'CNI', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'NINEA', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Adresse', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'RaisonSocial', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'UserPartenaire', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'superAdmin', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'Email', '' . "\0" . 'App\\Entity\\Partenaire' . "\0" . 'users'];
     }
 
     /**
@@ -439,6 +439,39 @@ class Partenaire extends \App\Entity\Partenaire implements \Doctrine\ORM\Proxy\P
         $this->__initializer__ && $this->__initializer__->__invoke($this, 'setEmail', [$Email]);
 
         return parent::setEmail($Email);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function getUsers(): \Doctrine\Common\Collections\Collection
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'getUsers', []);
+
+        return parent::getUsers();
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function addUser(\App\Entity\User $user): \App\Entity\Partenaire
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'addUser', [$user]);
+
+        return parent::addUser($user);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    public function removeUser(\App\Entity\User $user): \App\Entity\Partenaire
+    {
+
+        $this->__initializer__ && $this->__initializer__->__invoke($this, 'removeUser', [$user]);
+
+        return parent::removeUser($user);
     }
 
 }

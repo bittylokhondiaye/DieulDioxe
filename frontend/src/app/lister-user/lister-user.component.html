@@ -1,0 +1,26 @@
+<div  class="table-responsive">
+  <table  class="table">
+    <thead class="black white-text">
+      <tr>
+        <th > Email </th>
+        <th > Role </th>
+        <th > Date d'update </th>
+        <th > Profile </th>
+        <th > Statut </th>
+        
+        
+      </tr>
+    </thead>
+    <tbody>
+      <tr  *ngFor="let users of user">
+        <td>{{ users.email}}</td>
+        <td>{{ users.roles }}</td>
+        <td>{{ users.updatedAt }}</td>
+        <td>{{ users.Profile }}</td>
+        <td>{{ users.Statut }}</td>
+        <a  [routerLink]="['babacar']" routerLinkActive="router-link-active"  ><mat-icon (click)="block(user.id)">lock</mat-icon></a>
+        <!--<a   ><mat-icon  (click)="unblock(user.Id)">lock_open</mat-icon></a>-->
+      </tr>
+    </tbody>
+  </table>
+  </div>

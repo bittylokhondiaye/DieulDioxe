@@ -88,6 +88,13 @@ class User implements UserInterface
      */
     private $Compte;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\Partenaire", inversedBy="users")
+     */
+    private $Partenaire;
+
+    
+
 
     
     public function getId(): ?int
@@ -260,6 +267,19 @@ class User implements UserInterface
 
         return $this;
     }
+
+    public function getPartenaire(): ?Partenaire
+    {
+        return $this->Partenaire;
+    }
+
+    public function setPartenaire(?Partenaire $Partenaire): self
+    {
+        $this->Partenaire = $Partenaire;
+
+        return $this;
+    }
+
 
     
 }

@@ -30,9 +30,9 @@
   </mat-form-field>
   </div>
   
-  <div>
-     <img [src]="imageurl" alt="">
-      <input   class="form-control" formControlName="imageName" type="file" #ImageName accept="image/*" (change)="handleFileInput($event.target.files)" >
+  <div style="padding-left: 42%">
+     <img [src]="imageurl" alt=""  hidden>
+      <input    style="width: 27%" class="form-control" formControlName="imageName" type="file" #ImageName accept="image/*" (change)="handleFileInput($event.target.files)" >
 
    </div>
     <div class="example-button-row">

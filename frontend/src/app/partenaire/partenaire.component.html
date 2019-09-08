@@ -1,7 +1,7 @@
+<div  class="table-responsive">
 <table  class="table">
   <thead class="black white-text">
     <tr>
-      <th > Id </th>
       <th > Prenom </th>
       <th > Nom </th>
       <th > Telephone </th>
@@ -14,7 +14,6 @@
   </thead>
   <tbody>
     <tr  *ngFor="let partenaires of partenaire">
-      <td>{{partenaires.Id}}</td>
       <td>{{ partenaires.Prenom}}</td>
       <td>{{ partenaires.Nom }}</td>
       <td>{{ partenaires.Telephone }}</td>
@@ -26,3 +25,4 @@
     </tr>
   </tbody>
 </table>
+</div>
