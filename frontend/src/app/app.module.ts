@@ -26,7 +26,8 @@ import { TransactionComponent } from './transaction/transaction.component';
 import { CommonModule } from '@angular/common';
 import { ListerUserComponent } from './lister-user/lister-user.component';
 import { UserPartenaireComponent } from './user-partenaire/user-partenaire.component'; 
-import {MatMenuModule} from '@angular/material/menu'; 
+import {MatMenuModule} from '@angular/material/menu';
+import { NavBarComponent } from './nav-bar/nav-bar.component'; 
 
 
 
@@ -42,7 +43,8 @@ import {MatMenuModule} from '@angular/material/menu';
     DepotCompteComponent,
     TransactionComponent,
     ListerUserComponent,
-    UserPartenaireComponent
+    UserPartenaireComponent,
+    NavBarComponent
   ],
   imports: [
     BrowserModule,

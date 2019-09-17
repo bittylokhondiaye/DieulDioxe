@@ -513,6 +513,7 @@ class PartenaireController extends AbstractController
     public function listerUser(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
     {   
         $user=$this->getUser();
+        $partenaire=$user->getPartenaire();
         if ($user->getRoles()[0]=='ROLE_SUPER_ADMIN') {
             $liste = $entityManager->getRepository(User::class)->findBy(array('Profile' => 'admin'));
             $data = $serializer->serialize($liste, 'json');
@@ -522,7 +523,7 @@ class PartenaireController extends AbstractController
         }  
         
          if ($user->getRoles()[0]=='ROLE_ADMIN') {
-            $liste = $entityManager->getRepository(User::class)->findBy(array('Profile'=>'user'));
+            $liste = $entityManager->getRepository(User::class)->findBy(array('Partenaire'=>$partenaire));
             $data = $serializer->serialize($liste, 'json');
             return new Response($data, 200, [
                 'Content-Type' => 'application/json'

@@ -30,9 +30,7 @@ export class UserService {
     /* let interceptor = this.injector.get(TokenInterceptorService);
     interceptor.intercept(); */
 
-    return this.http.post(this.url,myDatas,{headers},).subscribe(res => {
-      console.log(res)
-  });
+    return this.http.post(this.url,myDatas,{headers});
     /* this.http.post(this.url, myDatas).subscribe(res => {
         console.log(res)
     }); */

@@ -47,16 +47,12 @@ export class PartenaireService {
 
   postUser(myDatas) {
     let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.post(this.urlajout,myDatas,{headers},).subscribe(res => {
-      console.log(res);
-  });
+    return this.http.post(this.urlajout,myDatas,{headers});
   }
 
   postCompte(donnees) {
     let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.post(this.urlcompte,donnees,{headers},).subscribe(res => {
-      console.log(res)
-    });
+    return this.http.post(this.urlcompte,donnees,{headers});
   }
 
   getCompte(): Observable<Compte2[]>{
@@ -69,9 +65,7 @@ export class PartenaireService {
       Compte:donnees.Compte,
       Montant: donnees.Montant
     }
-    return this.http.post(this.depoturl,data,{headers},).subscribe(res => {
-      console.log(res)
-    });                                                                                                                                                                                                                                                                                                                                                             
+    return this.http.post(this.depoturl,data,{headers});                                                                                                                                                                                                                                                                                                                                                             
   }
 
   postTransaction(donnees) {

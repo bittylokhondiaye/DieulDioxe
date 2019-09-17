@@ -48,6 +48,10 @@ export class AuthenticationService {
     return this.roles.indexOf('ROLE_SUPER_ADMIN')>=0;
   }
 
+  isCaissier(){
+    return this.roles.indexOf('ROLE_CAISSIER')>=0;
+  }
+
   isAuthenticated(){
     return this.roles && (this.isAdmin || this.isUser || this.isSuperAdmin );
   }
@@ -58,5 +62,9 @@ export class AuthenticationService {
   }
   getToken(){
     return localStorage.getItem('token');
+  }
+
+  logout(){
+    return localStorage.removeItem('token');
   }
 }

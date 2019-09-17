@@ -1,3 +1,6 @@
+<div>
+  <app-nav-bar></app-nav-bar>
+</div>
 <div  class="table-responsive">
   <table  class="table">
     <thead class="black white-text">
@@ -18,7 +21,7 @@
         <td>{{ users.updatedAt }}</td>
         <td>{{ users.Profile }}</td>
         <td>{{ users.Statut }}</td>
-        <a  [routerLink]="['babacar']" routerLinkActive="router-link-active"  ><mat-icon (click)="block(user.id)">lock</mat-icon></a>
+        <a  [routerLink]="['babacar']" routerLinkActive="router-link-active"  ><mat-icon (click)="block(users.id)">lock</mat-icon></a>
         <!--<a   ><mat-icon  (click)="unblock(user.Id)">lock_open</mat-icon></a>-->
       </tr>
     </tbody>

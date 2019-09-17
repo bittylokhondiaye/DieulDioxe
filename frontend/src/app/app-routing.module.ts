@@ -19,7 +19,7 @@ const routes: Routes = [
   { path:"depot" , component:DepotCompteComponent},
   { path:"transaction" , component:TransactionComponent},
   { path:"listerUser" , component:ListerUserComponent},
-  { path:"ajoutUserPartenaire" , component:UserPartenaireComponent}
+  { path:"ajoutUserPartenaire" , component:UserPartenaireComponent }
   
 ];
 

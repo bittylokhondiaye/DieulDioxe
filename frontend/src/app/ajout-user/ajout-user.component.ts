@@ -3,6 +3,7 @@ import {FormControl, Validators,FormBuilder, FormGroup} from '@angular/forms';
 import { UserService } from '../user.service';
 import { User } from '../User.model';
 import { TokenInterceptorService } from '../token-interceptor.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ajout-user',
@@ -60,7 +61,23 @@ export class AjoutUserComponent implements OnInit {
       formValue['imageName']=this.fileToUpload.name
       //formValue['imageName']
     ); */
-    this.userService.postUser(formData);
+    this.userService.postUser(formData).subscribe(res => {
+      console.log(res)
+    },err=>{
+      console.log(err);
+      Swal.fire({
+        type: 'error',
+        title: 'eeh fall tiol na dé',
+        text: err.statusText,
+      })
+  });
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'L\'utilisateur  a bien été ajouté',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
     
   }

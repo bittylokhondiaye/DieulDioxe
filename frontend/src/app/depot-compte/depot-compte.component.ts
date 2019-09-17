@@ -3,6 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Depot } from '../Depot.model';
 import { PartenaireService } from '../partenaire.service';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-depot-compte',
@@ -44,7 +45,16 @@ export class DepotCompteComponent implements OnInit {
     formValue['Compte'],
     ); 
   console.log(newDepot);
-    this._partenaire.postDepot(newDepot);
+    this._partenaire.postDepot(newDepot).subscribe(res => {
+      console.log(res)
+    },err=>{
+      console.log(err);
+      Swal.fire({
+        type: 'error',
+        title: 'Oops.. Problème amna',
+        text: err.statusText,
+      })
+  });
   }
 
 }

@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { PartenaireService } from '../partenaire.service';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Compte } from '../Compte.model';
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-ajout-compte',
@@ -23,7 +24,10 @@ export class AjoutCompteComponent implements OnInit {
     .subscribe( data =>{
      this.partenaire = data
      console.log(data);
-    });
+    },err=>{
+      console.log(err);
+  }
+    );
     
  }
 
@@ -40,7 +44,23 @@ export class AjoutCompteComponent implements OnInit {
     formValue['MontantDeposer'],
     formValue['Partenaire'],
     );
-    this._partenaire.postCompte(newCompte);
+    this._partenaire.postCompte(newCompte).subscribe(res => {
+      console.log(res)
+    },err=>{
+      console.log(err);
+      Swal.fire({
+        type: 'error',
+        title: 'Oops.. Problème amna',
+        text: err.error,
+      })
+  });
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'Le Compte a bien été ajouté',
+      showConfirmButton: false,
+      timer: 1500
+    })
   }
 
 

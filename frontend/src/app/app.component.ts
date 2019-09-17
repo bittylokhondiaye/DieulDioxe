@@ -16,25 +16,9 @@ export class AppComponent implements OnInit {
   
   title = 'DieulDioxeAngular';
 
-  constructor(private authService:AuthenticationService){}
+  constructor(){}
 
   ngOnInit(): void {
-    this.authService.loadToken();
-  }
-
-  isAdmin(){
-    return this.authService.isAdmin();
-  }
-
-  isUser(){
-    return this.authService.isUser();
-  }
-
-  isSuperAdmin(){
-    return this.authService.isSuperAdmin();
-  }
-
-  isAuthenticated(){
-    return this.authService.isAuthenticated;
+    
   }
 }

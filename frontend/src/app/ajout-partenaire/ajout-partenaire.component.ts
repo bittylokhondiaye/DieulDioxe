@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import {FormControl, Validators,FormBuilder, FormGroup} from '@angular/forms';
 import { UserService } from '../user.service';
 import { PartenaireService } from '../partenaire.service';
+import Swal from 'sweetalert2';
+import { HttpClient } from '@angular/common/http';
+
 
 @Component({
   selector: 'app-ajout-partenaire',
@@ -64,7 +67,23 @@ onSubmitForm() {
   formData.append('Adresse',formValue['Adresse'])
   formData.append('RaisonSocial',formValue['RaisonSocial'])
   
-  this.partenaireService.postUser(formData);
+  this.partenaireService.postUser(formData).subscribe(res => {
+    console.log(res)
+  },err=>{
+    console.log(err);
+    Swal.fire({
+      type: 'error',
+      title: 'Oops.. Problème amna',
+      text: err.statusText,
+    })
+});
+  Swal.fire({
+    position: 'top-end',
+    type: 'success',
+    title: 'Le partenaire a bien été ajouté',
+    showConfirmButton: false,
+    timer: 1500
+  })
   /* this.router.navigate(['/ajoutUser']); */
 }
 
