@@ -18,7 +18,7 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
             ],
             'methods' => [
                 [
-                    'PUT',
+                    'POST',
                 ],
             ],
         ],

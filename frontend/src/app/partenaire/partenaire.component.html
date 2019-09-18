@@ -1,6 +1,7 @@
 <div>
 <app-nav-bar></app-nav-bar>
 </div>
+<div class="container mt-5">
 <div  class="table-responsive">
 <table  class="table">
   <thead class="black white-text">
@@ -13,6 +14,9 @@
       <th > Adresse </th>
       <th > Raison Social </th>
       <th > Email </th>
+      <th >  </th>
+      <th >  </th>
+
     </tr>
   </thead>
   <tbody>
@@ -25,7 +29,10 @@
       <td>{{ partenaires.Adresse }}</td>
       <td>{{ partenaires.RaisonSocial }}</td>
       <td>{{ partenaires.Email }}</td>
+      <td><a  (click)="bloquer()"><mat-icon> lock</mat-icon> </a></td>
+      <td><a (click)="bloquer()"><mat-icon> lock_open</mat-icon> </a></td>
     </tr>
   </tbody>
 </table>
+</div>
 </div>

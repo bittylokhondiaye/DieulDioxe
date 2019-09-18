@@ -28,7 +28,7 @@ export class PartenaireService {
  private depoturl:string = "http://localhost:8000/api/depot";
  private transactionurl:string = "http://localhost:8000/api/makeTransaction";
  private urluser:string = "http://localhost:8000/api/user";
- private urlbloquer:string = "http://localhost:8000/api/bloquer/{id}";
+ private urlbloquer:string = "http://localhost:8000/api/bloquer/";
  private urluserpartenaire:string = "http://localhost:8000/api/userPartenaires";
 
  
@@ -80,7 +80,7 @@ export class PartenaireService {
 
   postbloquer(id):Observable<any> {
     let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.put<any>(this.urlbloquer+id,{headers})
+    return this.http.post<any>(this.urlbloquer+id,{headers},);
   }
 
   postUserPartenaire(donnees) {

@@ -11,6 +11,7 @@
     <div> 
     <mat-form-field floatLable="auto" appearence="fill">
       <mat-label>Montant à déposer</mat-label>
+      <mat-icon matPrefix>euro_symbol</mat-icon>
       <input matInput required  class="form-control" formControlName="Montant">
     </mat-form-field>
     </div>
@@ -19,6 +20,7 @@
     <div>
     <mat-form-field floatLable="auto" appearence="fill">
       <mat-label>Compte</mat-label>
+      <mat-icon matPrefix>credit_card</mat-icon>
       <mat-select class="form-control" formControlName="Compte" required>
           <mat-option>--</mat-option>
           <mat-option *ngFor="let comptes of compte" value={{comptes.id}}>

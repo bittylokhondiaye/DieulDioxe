@@ -420,7 +420,7 @@ class PartenaireController extends AbstractController
     }
 
     /**
-     * @Route("/api/bloquer/{id}" , name="bloquer", methods={"PUT"})
+     * @Route("/api/bloquer/{id}" , name="bloquer", methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function bloquer(Request $request,User $user,UserPasswordEncoderInterface $passwordEncoder, EntityManagerInterface $entityManager, SerializerInterface $serializer, ValidatorInterface $validator)

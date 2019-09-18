@@ -118,7 +118,7 @@ return [
     ],
     [ // $dynamicRoutes
         35 => [[['_route' => '_twig_error_test', '_controller' => 'twig.controller.preview_error::previewErrorPageAction', '_format' => 'html'], ['code', '_format'], null, null, false, true, null]],
-        66 => [[['_route' => 'bloquer', '_controller' => 'App\\Controller\\PartenaireController::bloquer'], ['id'], ['PUT' => 0], null, false, true, null]],
+        66 => [[['_route' => 'bloquer', '_controller' => 'App\\Controller\\PartenaireController::bloquer'], ['id'], ['POST' => 0], null, false, true, null]],
         101 => [[['_route' => 'api_entrypoint', '_controller' => 'api_platform.action.entrypoint', '_format' => '', '_api_respond' => 'true', 'index' => 'index'], ['index', '_format'], null, null, false, true, null]],
         135 => [[['_route' => 'api_doc', '_controller' => 'api_platform.action.documentation', '_format' => '', '_api_respond' => 'true'], ['_format'], null, null, false, true, null]],
         169 => [
