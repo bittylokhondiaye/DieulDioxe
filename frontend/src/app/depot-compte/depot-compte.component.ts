@@ -52,9 +52,17 @@ export class DepotCompteComponent implements OnInit {
       Swal.fire({
         type: 'error',
         title: 'Oops.. Problème amna',
-        text: err.statusText,
+        text: err.error,
       })
   });
+
+  Swal.fire({
+    position: 'top-end',
+    type: 'success',
+    title: 'Le dépôt a bien été fait',
+    showConfirmButton: false,
+    timer: 1500
+  })
   }
 
 }

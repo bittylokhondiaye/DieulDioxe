@@ -23,6 +23,8 @@ export class NavBarComponent implements OnInit {
   }
 
   isSuperAdmin(){
+    console.log(this.authService.isSuperAdmin());
+    
     return this.authService.isSuperAdmin();
   }
 

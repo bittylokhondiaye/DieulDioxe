@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { PartenaireService } from '../partenaire.service';
 import { UserPartenaire } from '../userPartenaire.model';
+import Swal from 'sweetalert2';
+
 
 @Component({
   selector: 'app-user-partenaire',
@@ -71,7 +73,24 @@ export class UserPartenaireComponent implements OnInit {
   formData.append('Email',formValue['Email'])
   formData.append('Compte',formValue['Compte'])
   formData.append('imageName',this.fileToUpload,this.fileToUpload.name)
-      this._partenaire.postUserPartenaire(formData);
+      this._partenaire.postUserPartenaire(formData).subscribe(res => {
+        console.log(res)
+      },err=>{
+        console.log(err);
+        Swal.fire({
+          type: 'error',
+          title: 'eeh fall tiol na dé',
+          text: err.statusText,
+        })
+    });
+
+    Swal.fire({
+      position: 'top-end',
+      type: 'success',
+      title: 'L\'utilisateur  a bien été ajouté',
+      showConfirmButton: false,
+      timer: 1500
+    })
     }
 
 }

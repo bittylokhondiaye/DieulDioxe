@@ -25,6 +25,7 @@ class  Depot
     /**
      * @ORM\Column(type="integer")
      * @Assert\NotBlank()
+     *  @Assert\Range(min = 75000)
      */
     private $Montant;
 

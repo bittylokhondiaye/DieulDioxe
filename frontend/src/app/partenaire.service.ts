@@ -70,9 +70,7 @@ export class PartenaireService {
 
   postTransaction(donnees) {
     let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.post(this.transactionurl,donnees,{headers},).subscribe(res => {
-      console.log(res)
-    });
+    return this.http.post(this.transactionurl,donnees,{headers});
   }
 
   getUser() : Observable<ListerUser[]>  {
@@ -87,8 +85,6 @@ export class PartenaireService {
 
   postUserPartenaire(donnees) {
     let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.post(this.urluserpartenaire,donnees,{headers},).subscribe(res => {
-      console.log(res)
-    });
+    return this.http.post(this.urluserpartenaire,donnees,{headers});
   }
 }

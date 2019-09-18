@@ -27,6 +27,7 @@ export class AuthenticationService {
     localStorage.setItem('token',jwt);
     this.jwt=jwt;
     this.parseJWT();
+
   }
 
   parseJWT(){
@@ -34,26 +35,29 @@ export class AuthenticationService {
     let objJWT=jwtHelper.decodeToken(this.jwt);
     this.username=objJWT.obj;
     this.roles=objJWT.roles;
+     localStorage.setItem('roles',objJWT.roles);
   }
 
   isAdmin(){
-    return this.roles.indexOf('ROLE_ADMIN')>=0;
+    return this.roles[0].indexOf('ROLE_ADMIN')>=0;
   }
 
   isUser(){
-    return this.roles.indexOf('ROLE_USER')>=0;
+    return this.roles[0].indexOf('ROLE_USER')>=0;
   }
 
   isSuperAdmin(){
-    return this.roles.indexOf('ROLE_SUPER_ADMIN')>=0;
+    console.log(this.roles[0]);
+    
+    return this.roles[0].indexOf('ROLE_SUPER_ADMIN')>=0;
   }
 
   isCaissier(){
-    return this.roles.indexOf('ROLE_CAISSIER')>=0;
+    return this.roles[0].indexOf('ROLE_CAISSIER')>=0;
   }
 
   isAuthenticated(){
-    return this.roles && (this.isAdmin || this.isUser || this.isSuperAdmin );
+    return this.roles[0] && (this.isAdmin || this.isUser || this.isSuperAdmin );
   }
 
   loadToken(){

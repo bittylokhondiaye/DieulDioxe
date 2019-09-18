@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { HttpClient } from '@angular/common/http';
 import { Transaction } from '../Transaction.model';
 import { PartenaireService } from '../partenaire.service';
-
+import Swal from 'sweetalert2';
 
 @Component({
   selector: 'app-transaction',
@@ -51,7 +51,24 @@ export class TransactionComponent implements OnInit {
     formValue['NomCompletExpediteur'],
     formValue['NomCompletDestinataire'],
     ); 
-    this._partenaire.postTransaction(newTransaction);
+    this._partenaire.postTransaction(newTransaction).subscribe(res => {
+      console.log(res)
+    },err=>{
+      console.log(err);
+      Swal.fire({
+        type: 'error',
+        title: 'eeh fall tiol na dé',
+        text: err.statusText,
+      })
+  });
+  Swal.fire({
+    position: 'top-end',
+    type: 'success',
+    title: 'Fall transaction bi dial na dé',
+    showConfirmButton: false,
+    timer: 1500
+  })
+
   }
    
 
