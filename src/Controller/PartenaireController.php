@@ -97,31 +97,6 @@ class PartenaireController extends AbstractController
         $password=$partenaire->getPassword();
 
 
-            $user = new User();
-            $form=$this->createForm(UserType::class, $user);
-            $form->handleRequest($request);
-            $values=$request->request->all();
-            $form->submit($values);
-            $files=$request->files->all()['imageName'];
-            $user->setEmail($email);
-            $encode=$passwordEncoder->encodePassword($user, $password);
-            $user->setPassword($encode);
-            $user->setImageFile($files);
-            $user->setProfile("admin");
-            $user->setStatut("BLOQUER");
-            $roles=["ROLE_ADMIN"];
-        
-            $user->setRoles($roles);
-            
-            $errors = $validator->validate($user);
-            if(count($errors)) {
-                
-                return new Response($errors, 500 );
-            }
-            $entityManager->persist($user);
-            $entityManager->flush();
-
-
         $compte= new Compte();
         $form=$this->createForm(CompteType::class, $compte);
         $form->handleRequest($request); 
@@ -141,6 +116,37 @@ class PartenaireController extends AbstractController
         }
         $entityManager->persist($compte);
         $entityManager->flush();
+
+
+            $user = new User();
+            $form=$this->createForm(UserType::class, $user);
+            $form->handleRequest($request);
+            $values=$request->request->all();
+            $form->submit($values);
+            $files=$request->files->all()['imageName'];
+            $user->setEmail($email);
+            $encode=$passwordEncoder->encodePassword($user, $password);
+            $user->setPassword($encode);
+            $user->setImageFile($files);
+            $user->setProfile("admin");
+            $user->setStatut("BLOQUER");
+            $user->setCompte($compte);
+            $user->setPartenaire($partenaire);
+
+            $roles=["ROLE_ADMIN"];
+        
+            $user->setRoles($roles);
+            
+            $errors = $validator->validate($user);
+            if(count($errors)) {
+                
+                return new Response($errors, 500 );
+            }
+            $entityManager->persist($user);
+            $entityManager->flush();
+
+
+        
         
         
         $data=[

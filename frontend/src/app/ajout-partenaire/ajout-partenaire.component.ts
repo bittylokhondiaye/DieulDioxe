@@ -47,7 +47,7 @@ export class AjoutPartenaireComponent implements OnInit {
       Adresse: ['',Validators.required],
       RaisonSocial: ['',Validators.required],
       Email:['',Validators.required] ,
-      NumeroCompte: ['',Validators.required],
+      //NumeroCompte: ['',Validators.required],
       imageName:['',Validators.required]
     });
 }
@@ -77,7 +77,7 @@ onSubmitForm() {
       text: err.statusText,
     })
 });
-  /*Swal.fire({
+  Swal.fire({
     position: 'top-end',
     type: 'success',
     title: 'Le partenaire a bien été ajouté',
