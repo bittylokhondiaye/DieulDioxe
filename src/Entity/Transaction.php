@@ -92,6 +92,11 @@ class Transaction
      */
     private $CommissionPartenaire;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="App\Entity\User")
+     */
+    private $user;
+
     public function getId(): ?int
     {
         return $this->id;
@@ -262,6 +267,18 @@ class Transaction
     public function setCommissionPartenaire(int $CommissionPartenaire): self
     {
         $this->CommissionPartenaire = $CommissionPartenaire;
+
+        return $this;
+    }
+
+    public function getUser(): ?User
+    {
+        return $this->user;
+    }
+
+    public function setUser(?User $user): self
+    {
+        $this->user = $user;
 
         return $this;
     }

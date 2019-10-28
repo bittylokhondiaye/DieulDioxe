@@ -26,6 +26,7 @@ return $getExpiry ? PHP_INT_MAX : Hydrator::hydrate(
                     'CommissionEtat',
                     'CommissionSystem',
                     'CommissionPartenaire',
+                    'user',
                 ],
             ],
         ],

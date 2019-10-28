@@ -48,18 +48,18 @@ class PartenaireController extends AbstractController
         // Configure Dompdf according to your needs
         $pdfOptions = new Options();
         $pdfOptions->set('defaultFont', 'Arial');
-        
+
         // Instantiate Dompdf with our options
         $dompdf = new Dompdf($pdfOptions);
-        
+
         // Retrieve the HTML generated in our twig file
         $html = $this->renderView('partenaire/index.html.twig', [
             'controller_name' => 'PartenaireController',
         ]);
-        
+
         // Load HTML to Dompdf
         $dompdf->loadHtml($html);
-        
+
         // (Optional) Setup the paper size and orientation 'portrait' or 'portrait'
         $dompdf->setPaper('A4', 'portrait');
 
@@ -70,11 +70,11 @@ class PartenaireController extends AbstractController
         $dompdf->stream("contrat de partenariat.pdf", [
             "Attachment" => false
         ]);
-        
+
     }
 
     /**
-     * @Route("/api/partenaires", name="ajoutPartenaire",methods={"POST"}) 
+     * @Route("/api/partenaires", name="ajoutPartenaire",methods={"POST"})
      * @IsGranted("ROLE_SUPER_ADMIN")
      */
     public function ajoutPartenaire(Request $request,SerializerInterface $serializer, EntityManagerInterface $entityManager,UserPasswordEncoderInterface $passwordEncoder,ValidatorInterface $validator):Response
@@ -82,24 +82,24 @@ class PartenaireController extends AbstractController
         $partenaire= new Partenaire();
         $form=$this->createForm(PartenaireType::class, $partenaire);
         $values=$request->request->all();
-       
+
         $form->submit($values);
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($partenaire);
             if(count($errors)) {
-                
+
                 return new Response($errors, 500 );
             }
         $entityManager->persist($partenaire);
         $entityManager->flush();
-        
+
         $email=$partenaire->getEmail();
         $password=$partenaire->getPassword();
 
 
         $compte= new Compte();
         $form=$this->createForm(CompteType::class, $compte);
-        $form->handleRequest($request); 
+        $form->handleRequest($request);
         $values=$request->request->all();
         $form->submit($values);
         $compte->setDateCreation(new \DateTime());
@@ -134,21 +134,21 @@ class PartenaireController extends AbstractController
             $user->setPartenaire($partenaire);
 
             $roles=["ROLE_ADMIN"];
-        
+
             $user->setRoles($roles);
-            
+
             $errors = $validator->validate($user);
             if(count($errors)) {
-                
+
                 return new Response($errors, 500 );
             }
             $entityManager->persist($user);
             $entityManager->flush();
 
 
-        
-        
-        
+
+
+
         $data=[
             'status1'=>201,
             'message1'=>' Le partenaire est ajouté'
@@ -173,7 +173,7 @@ class PartenaireController extends AbstractController
         $entityManager= $this->getDoctrine()->getManager();
         $errors = $validator->validate($userPartenaire);
             if(count($errors)) {
-                
+
                 return new Response($errors, 500 );
             }
         $entityManager->persist($userPartenaire);
@@ -196,12 +196,12 @@ class PartenaireController extends AbstractController
             $user->setProfile("user");
             $user->setStatut("BLOQUER");
             $roles=["ROLE_USER"];
-        
+
             $user->setRoles($roles);
-            
+
             $errors = $validator->validate($user);
             if(count($errors)) {
-                
+
                 return new Response($errors, 500 );
             }
             $entityManager->persist($user);
@@ -223,10 +223,10 @@ class PartenaireController extends AbstractController
     {
         $compte= new Compte();
         $form=$this->createForm(CompteType::class, $compte);
-        $form->handleRequest($request); 
+        $form->handleRequest($request);
         $values=$request->request->all();
         $form->submit($values);
-       
+
        $partenaire=$compte->getPartenaire();
         $compte->setDateCreation(new \DateTime());
         $compte->setMontantInitial(0);
@@ -283,11 +283,11 @@ class PartenaireController extends AbstractController
     {
         $depot=new Depot();
         $form=$this->createForm(DepotType::class, $depot);
-        $form->handleRequest($request); 
+        $form->handleRequest($request);
         $values=$request->request->all();
         $form->submit($values);
         $caissier=$this->getUser();
-        
+
         $depot->setCaissier($caissier);
         $compte=$entityManager->getRepository(Compte::class)->find($values["Compte"]);
         if(!$compte){
@@ -304,7 +304,7 @@ class PartenaireController extends AbstractController
         $entityManager->persist($depot);
         $entityManager->flush();
         $montant=$depot->getMontant();
-        
+
         $compte->getMontantInitial();
         $compte->setMontantInitial($compte->getSolde());
         $compte->setMontantDeposer($montant);
@@ -337,13 +337,13 @@ class PartenaireController extends AbstractController
         $values=$request->request->all();
         $form->submit($values);
         $transaction->setDateTransaction(new \DateTime());
-        $user = $this->getUser();         
+        $user = $this->getUser();
         $compte=$user->getCompte();
         $compte=$entityManager->getRepository(Compte::class)->find($compte);
         $transaction->setCompte($compte);
         $compte->setMontantInitial($compte->getSolde());
         $montant=$transaction->getMontant();
-        
+
         $borneInf=array(1,501,1001,1101,1501,2001,3001,5001,6001,10001,12001,15001,17001,20001,25001,30001,35001,40001,50001,60001,70001,75001,100001,125001,150001,175001,200001,250001,300001,350001,400001,500001,600001,700001,750001,1000001,1250001,1500001,2000001);
         $borneSup=array(500,1000,1100,1500,2000,3000,5000,6000,10000,12000,15000,17000,20000,25000,30000,35000,40000,50000,60000,70000,75000,100000,125000,150000,175000,200000,250000,300000,350000,400000,500000,600000,700000,75000,1000000,1250000,1500000,2000000,3000000);
         $frais=array(50,100,100,100,200,200,400,600,600,900,900,1000,100,1500,1500,1500,1800,1800,2000,2700,2700,3000,3600,3600,3800,4600,6400,8000,8500,9900,11900,11900,13600,14500,21700,24500,31900,36000,0.2);
@@ -374,11 +374,11 @@ class PartenaireController extends AbstractController
         }
         else if($type=="retrait" )
         {
-            
+
             $code=$values['CodeTransaction'];
-            
+
             $codeRetrait=$entityManager->getRepository(Code::class)->findOneBy(array('CodeRetrait' => $code));
-            
+
             if($codeRetrait==null){ throw new Exception('Le code est invalide');}
             else{
                 if(($codeRetrait->getSiRetire())==true){throw new Exception('le retrait a déja été fait avec ce code');}
@@ -397,9 +397,9 @@ class PartenaireController extends AbstractController
                     $entityManager->flush();
                 }
             }
-            
-             
-                
+
+
+
         }
         $entityManager->persist($compte);
         $entityManager->flush();
@@ -414,7 +414,7 @@ class PartenaireController extends AbstractController
 
         $data = [
             'status' => 201,
-            'message' => 'La transaction a bien été faite' 
+            'message' => 'La transaction a bien été faite'
         ];
         return new JsonResponse($data, 201);
     }
@@ -430,7 +430,7 @@ class PartenaireController extends AbstractController
             $user->getCompte();
             $user->getEmail();
             $user->getPassword();
-            
+
             $user->getImageName();
             if($user->getStatut()=="BLOQUER"){
                 $partenaireUpdate->setStatut("DEBLOQUER");
@@ -440,7 +440,7 @@ class PartenaireController extends AbstractController
             }
             $Statut=$partenaireUpdate->getStatut();
             if($Statut=="DEBLOQUER"){
-                $roles=["ROLE_BLOQUE"];    
+                $roles=["ROLE_BLOQUE"];
             }
             else{
                 if($user->getProfile()=="user"){
@@ -464,7 +464,7 @@ class PartenaireController extends AbstractController
                     'Content-Type' => 'application/json'
                 ]);
             }
-            
+
             $entityManager->flush();
 
             $data = [
@@ -480,31 +480,31 @@ class PartenaireController extends AbstractController
      * @Route("/api/listerPartenaire/" , name="listerPartenaire", methods={"GET"})
      * @IsGranted({"ROLE_ADMIN",  "ROLE_SUPER_ADMIN"})
     */
-    
+
     public function listerPartenaire(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
     {
-        
+
         $partenaire = $entityManager->getRepository(Partenaire::class)->findAll();
         $data = $serializer->serialize($partenaire, 'json');
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
         ]);
-        
+
     }
 
     /**
      * @Route("/api/listerCompte" , name="listerCompte", methods={"GET"})
     */
-    
+
     public function listerCompte(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
     {
-        
+
         $compte = $entityManager->getRepository(Compte::class)->findAll();
         $data = $serializer->serialize($compte, 'json');
         return new Response($data, 200, [
             'Content-Type' => 'application/json'
         ]);
-        
+
     }
 
 
@@ -515,9 +515,9 @@ class PartenaireController extends AbstractController
      * @Route("/api/user" , name="listerUser", methods={"GET"})
      * @IsGranted({"ROLE_ADMIN",  "ROLE_SUPER_ADMIN"})
     */
-    
+
     public function listerUser(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
-    {   
+    {
         $user=$this->getUser();
         $partenaire=$user->getPartenaire();
         if ($user->getRoles()[0]=='ROLE_SUPER_ADMIN') {
@@ -526,16 +526,101 @@ class PartenaireController extends AbstractController
             return new Response($data, 200, [
                 'Content-Type' => 'application/json'
             ]);
-        }  
-        
+        }
+
          if ($user->getRoles()[0]=='ROLE_ADMIN') {
             $liste = $entityManager->getRepository(User::class)->findBy(array('Partenaire'=>$partenaire));
             $data = $serializer->serialize($liste, 'json');
             return new Response($data, 200, [
                 'Content-Type' => 'application/json'
             ]);
-        } 
+        }
 
     }
-    
+
+
+    /**
+         * @Route("/api/listerTransaction/" , name="listerTransaction", methods={"GET"})
+         * @IsGranted({"ROLE_ADMIN",  "ROLE_USER"})
+        */
+
+        public function listerTransaction(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
+        {
+            $user=$this->getUser();
+            $partenaire=$user->getPartenaire();
+            $compte=$user->getCompte();
+            $compte=$entityManager->getRepository(Compte::class)->find($compte);
+            $transPartenaire=$compte->getPartenaire();
+            if ($user->getRoles()[0]=='ROLE_ADMIN'  && $partenaire==$transPartenaire){
+            //$transactions = $entityManager->getRepository(Transaction::class)->findAll();
+            $comptes=$entityManager->getRepository(Compte::class)->findBy(array('Partenaire'=>$partenaire));
+            $taille=count($comptes);
+            for($i=0;$i<$taille;$i++){
+                    $compte=$comptes[$i];
+                    $liste = $entityManager->getRepository(Transaction::class)->findBy(array('Compte'=> $compte));
+                }
+            }
+            else if ($user->getRoles()[0]=='ROLE_USER'  && $partenaire==$transPartenaire){
+                $liste = $entityManager->getRepository(Transaction::class)->findBy(array('user'=> $user));
+            }
+
+            $data = $serializer->serialize($liste, 'json');
+            return new Response($data, 200, [
+                'Content-Type' => 'application/json'
+            ]);
+
+        }
+
+
+
+            /**
+             * @Route("/api/detailTransaction/{id}" , name="detailTransaction", methods={"GET"})
+             * @IsGranted({"ROLE_ADMIN",  "ROLE_USER"})
+            */
+
+            public function detailTransaction(EntityManagerInterface $entityManager,Transaction $transaction,Request $request,SerializerInterface $serializer)
+            {
+               $liste = $entityManager->getRepository(Transaction::class)->find($transaction->getId());
+                           $data = $serializer->serialize($liste, 'json');
+                           return new Response($data, 200, [
+                               'Content-Type' => 'application/json'
+                           ]);
+            }
+
+            /**
+             * @Route("/api/listeTransactionParDate" , name="listeTransactionParDate", methods={"POST"})
+             * @IsGranted({"ROLE_ADMIN",  "ROLE_USER"})
+            */
+
+            public function transactionsParDate(EntityManagerInterface $entityManager,Request $request,SerializerInterface $serializer)
+            {
+                $user=$this->getUser();
+                $partenaire=$user->getPartenaire();
+                $compte=$user->getCompte();
+                $compte=$entityManager->getRepository(Compte::class)->find($compte);
+                $transPartenaire=$compte->getPartenaire();
+                $comptes=$entityManager->getRepository(Compte::class)->findBy(array('Partenaire'=>$partenaire));
+                $taille=count($comptes);
+                $date1= new \DateTime('2019-08-17');
+                //$date1=$date1->format('Y-m-d');
+                $date2= new \DateTime('2019-10-25');
+                //$date2=$date2->format('Y-m-d');
+                 if ($user->getRoles()[0]=='ROLE_ADMIN'){
+                    for($i=0;$i<$taille;$i++){
+                        $compte=$comptes[$i];
+                        $liste = $entityManager->getRepository(Transaction::class)->findBetweenDateAdmin($date1,$date2,$compte);
+                        $data = $serializer->serialize($liste, 'json');
+                    }
+                 }
+                else if ($user->getRoles()[0]=='ROLE_USER'){
+                $liste = $entityManager->getRepository(Transaction::class)->findBetweenDate($user,$date1,$date2);
+                    $data = $serializer->serialize($liste, 'json');
+                }
+
+                return new Response($data, 200, [
+                    'Content-Type' => 'application/json'
+                ]);
+
+            }
+
 }

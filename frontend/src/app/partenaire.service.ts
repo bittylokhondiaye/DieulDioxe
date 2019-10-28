@@ -78,9 +78,11 @@ export class PartenaireService {
    return  this.http.get<ListerUser[]>(this.urluser,{headers},);
   }
 
-  postbloquer(id):Observable<any> {
-    let  headers = new HttpHeaders().set('Authorization', "Bearer " + localStorage.getItem('token'));
-    return this.http.post<any>(this.urlbloquer+id,{headers},);
+  postbloquer(id){
+    let  headers = new HttpHeaders().set('Authorization', "Bearer " +localStorage.getItem('token'));
+    return this.http.post(this.urlbloquer+id,{headers},).subscribe(res => {
+      console.log(res);
+  });;
   }
 
   postUserPartenaire(donnees) {

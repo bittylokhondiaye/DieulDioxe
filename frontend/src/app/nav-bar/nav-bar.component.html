@@ -19,7 +19,7 @@
 
       <button mat-button [matMenuTriggerFor]="user"   *ngIf="isSuperAdmin() || isAdmin()">User</button>
       <mat-menu #user="matMenu">
-          <button mat-menu-item  [routerLink]="['/ajoutUser']" routerLinkActive="router-link-active" >Ajouter User</button>
+          <button mat-menu-item  [routerLink]="['/ajoutUser']" routerLinkActive="router-link-active" *ngIf="isSuperAdmin()">Ajouter User</button>
           <button mat-menu-item  [routerLink]="['/listerUser']" routerLinkActive="router-link-active" >lister User</button>
           <button mat-menu-item  [routerLink]="['/ajoutUserPartenaire']" routerLinkActive="router-link-active" *ngIf="isAdmin()">Ajout User Partenaire</button>
       </mat-menu>

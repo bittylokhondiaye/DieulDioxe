@@ -23,13 +23,13 @@ export class ListerUserComponent implements OnInit {
     });
  }
 
- block(id:number){
+ block(id){
      this._partenaire.postbloquer(id)
-     .subscribe(
+     /*.subscribe(
        data=>{
-        this.ngOnInit();
+       this.ngOnInit();
        }
-     )
+     )*/
      
  }
 

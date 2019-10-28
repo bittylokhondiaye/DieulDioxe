@@ -47,4 +47,43 @@ class TransactionRepository extends ServiceEntityRepository
         ;
     }
     */
+
+
+
+
+      /**
+          * @return Transaction[] Returns an array of Transaction objects
+          */
+        public function findBetweenDate($user,$date1,$date2)
+        {
+            return $this->createQueryBuilder('t')
+                ->andWhere('t.user = :user')
+                ->andWhere('t.DateTransaction >= :date1')
+                ->andWhere('t.DateTransaction <= :date2')
+                ->setParameter('user', $user)
+                ->setParameter('date1', $date1)
+                ->setParameter('date2', $date2)
+                ->getQuery()
+                ->getResult()
+            ;
+        }
+
+
+
+        /**
+                  * @return Transaction[] Returns an array of Transaction objects
+                  */
+                public function findBetweenDateAdmin($date1,$date2,$compte)
+                {
+                    return $this->createQueryBuilder('t')
+                        ->andWhere('t.DateTransaction >= :date1')
+                        ->andWhere('t.DateTransaction <= :date2')
+                        ->andWhere('t.Compte = :compte')
+                        ->setParameter('date1', $date1)
+                        ->setParameter('date2', $date2)
+                        ->setParameter('compte', $compte)
+                        ->getQuery()
+                        ->getResult()
+                    ;
+                }
 }
